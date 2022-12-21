@@ -2,19 +2,19 @@ const myFort = {};
 
 myFort.tools = [
     {
-        type: 'mittens',
+        type: 'Mittens',
         snow: 1,
         cost: 1,
         amount: 1,
     },
     {
-        type: 'trowel',
+        type: 'Trowel',
         snow: 10,
         cost: 10,
         amount: 0,
     },
     {
-        type: 'shovel',
+        type: 'Shovel',
         snow: 100,
         cost: 500,
         amount: 0,
@@ -23,25 +23,25 @@ myFort.tools = [
 
 const fortPieces = [
     {
-        type: 'wall',
+        type: 'Wall',
         cost: 10,
         defence: 1,
         health: 10,
     },
     {
-        type: 'tower',
+        type: 'Tower',
         cost: 100,
         defence: 5,
         health: 25,
     },
     {
-        type: 'fortification',
+        type: 'Fortification',
         cost: 500,
         defence: 5,
         health: 50,
     },
     {
-        type: 'keep',
+        type: 'Keep',
         cost: 1000,
         defence: 10,
         health: 100,
@@ -55,6 +55,7 @@ myFort.constructToolButtons = () => {
 
     myFort.tools.forEach((item) => {
         const buttonDiv = document.createElement('div');
+        buttonDiv.classList.add('item-div');
         const buttonElem1 = document.createElement('button');
         const buttonDescrip1 = document.createElement('p');
         buttonElem1.textContent = item.type;
@@ -80,11 +81,12 @@ myFort.constructToolButtons = () => {
 // construct buttons for the fort
 fortPieces.forEach((item) => {
     const buttonDiv = document.createElement('div');
+    buttonDiv.classList.add('item-div');
     const buttonElem = document.createElement('button');
     const buttonDescrip = document.createElement('p');
     buttonElem.textContent = item.type;
     buttonElem.classList.add('fort-button');
-    buttonDescrip.innerText = `cost: ${item.cost}\n\ndefence: ${item.defence}\n\nhealth: ${item.health}`
+    buttonDescrip.innerText = `cost: ${item.cost}\ndefence: ${item.defence}\nhealth: ${item.health}`
     buttonDiv.appendChild(buttonElem);
     buttonDiv.appendChild(buttonDescrip);
     //console.log(buttonElem);
