@@ -48,10 +48,31 @@ const fortPieces = [
     }
 ];
 
+// construct buttons for the fort
+fortPieces.forEach((item) => {
+    const buttonDiv = document.createElement('div');
+    buttonDiv.classList.add('item-div');
+    const buttonElem = document.createElement('button');
+    const buttonDescrip = document.createElement('p');
+    buttonElem.textContent = item.type;
+    buttonElem.classList.add('fort-button');
+    buttonDescrip.innerText = `cost: ${item.cost} ❄️\ndefence: ${item.defence}\nhealth: ${item.health}`
+    buttonDiv.appendChild(buttonElem);
+    buttonDiv.appendChild(buttonDescrip);
+    //console.log(buttonElem);
+
+    // add in to HTML
+    const fortSection = document.querySelector('.fort-pieces');
+    fortSection.appendChild(buttonDiv);
+});
+
 // construct buttons for tools
 myFort.constructToolButtons = () => {
     const toolsSection = document.querySelector('.tools');
     //toolsSection.innerText = '';
+    const title = document.createElement('h2');
+    title.innerText = 'TOOLS';
+    toolsSection.appendChild(title);
 
     myFort.tools.forEach((item) => {
         const buttonDiv = document.createElement('div');
@@ -60,11 +81,11 @@ myFort.constructToolButtons = () => {
         const buttonDescrip1 = document.createElement('p');
         buttonElem1.textContent = item.type;
         buttonElem1.classList.add('tool-button');
-        buttonDescrip1.innerText = `snow: ${item.snow}`;
+        buttonDescrip1.innerText = `❄️snow: ${item.snow}`;
 
         const buttonElem2 = document.createElement('button');
         const buttonDescrip2 = document.createElement('p');
-        buttonElem2.textContent = `cost: ${item.cost}`;
+        buttonElem2.textContent = `cost: ${item.cost} 🪙`;
         buttonElem2.classList.add('buy-tool-button');
         buttonDescrip2.innerText = `amount: ${item.amount}`;
         buttonDiv.appendChild(buttonElem1);
@@ -78,27 +99,7 @@ myFort.constructToolButtons = () => {
     });
 }
 
-// construct buttons for the fort
-fortPieces.forEach((item) => {
-    const buttonDiv = document.createElement('div');
-    buttonDiv.classList.add('item-div');
-    const buttonElem = document.createElement('button');
-    const buttonDescrip = document.createElement('p');
-    buttonElem.textContent = item.type;
-    buttonElem.classList.add('fort-button');
-    buttonDescrip.innerText = `cost: ${item.cost}\ndefence: ${item.defence}\nhealth: ${item.health}`
-    buttonDiv.appendChild(buttonElem);
-    buttonDiv.appendChild(buttonDescrip);
-    //console.log(buttonElem);
-
-    // add in to HTML
-    const fortSection = document.querySelector('.fort-pieces');
-    fortSection.appendChild(buttonDiv);
-});
-
-
-////////////////////////// MY FORT //////////////////////////
-
+// INITIALIZE
 myFort.init = () => {
     // initialize currency (snow & pennies) & assets
     myFort.curSnow = 0;
@@ -112,6 +113,7 @@ myFort.init = () => {
     //console.log(myFort);
 }
 
+// DISPLAY CURRENCY
 myFort.displayCurrency = () => {
     const snowElem = document.querySelector('.current-snow');
     const penniesElem = document.querySelector('.current-pennies');
@@ -119,13 +121,15 @@ myFort.displayCurrency = () => {
     penniesElem.innerText = myFort.curPennies;
 }
 
+// UPDATE AMOUNTS
 myFort.updateAmount = (index) => {
     const toolsSection = document.querySelector('.tools');
-    toolsSection.children[index].children[3].innerText = `amount: ${myFort.tools[index].amount}`;
+    toolsSection.children[index+1].children[3].innerText = `amount: ${myFort.tools[index].amount}`;
     console.log(toolsSection);
     
 }
 
+// DISPLAY ASSETS
 myFort.displayAssets = () => {
     const myFortDiv = document.querySelector('.my-fort');
     myFortDiv.innerText='';
@@ -138,6 +142,7 @@ myFort.displayAssets = () => {
     });
 }
 
+// UPDATE STUFF
 myFort.update = () => {
     const toolButtons = document.querySelectorAll('.tool-button');
     const buyToolButtons = document.querySelectorAll('.buy-tool-button');
