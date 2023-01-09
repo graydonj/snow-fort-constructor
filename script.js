@@ -27,24 +27,28 @@ const fortPieces = [
         cost: 10,
         defence: 1,
         health: 10,
+        totalHealth: 10,
     },
     {
         type: 'Tower',
         cost: 100,
         defence: 5,
         health: 25,
+        totalHealth: 25,
     },
     {
         type: 'Fortification',
         cost: 500,
         defence: 5,
         health: 50,
+        totalHealth: 50,
     },
     {
         type: 'Keep',
         cost: 1000,
         defence: 10,
         health: 100,
+        totalHealth: 100,
     }
 ];
 
@@ -136,8 +140,20 @@ myFort.displayAssets = () => {
 
     myFort.assets.forEach((item) => {
         const newAsset = document.createElement('span');
-        newAsset.classList.add('fort-item');
-        newAsset.innerText = `${item.type}:\n\ncurrent health: ${item.health}`;
+
+        // Here we determine current health of the fort item and display it as green (high health), yellow (medium health), or red (low health)
+        if (item.health >= (item.totalHealth * 0.9)) {
+            newAsset.classList.add('fort-item');
+        } else if (item.health >= (item.totalHealth * 0.4)) {
+            newAsset.classList.add('fort-item-dmg');
+        } else {
+            newAsset.classList.add('fort-item-xdmg');
+        }
+
+        // The internal text for each fort item
+        newAsset.innerText = `${item.type}:\n\nhealth: ${item.health}`;
+
+        // add it to the HTML
         myFortDiv.appendChild(newAsset);
     });
 }
