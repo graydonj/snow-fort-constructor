@@ -33,14 +33,14 @@ const fortPieces = [
         type: 'Tower',
         cost: 100,
         defence: 5,
-        health: 25,
+        health: 15,
         totalHealth: 25,
     },
     {
         type: 'Fortification',
         cost: 500,
         defence: 5,
-        health: 50,
+        health: 5,
         totalHealth: 50,
     },
     {
