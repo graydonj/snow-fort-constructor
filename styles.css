@@ -22,6 +22,12 @@ h2 {
     text-align: center;
 }
 
+/* h5 is the style element for the title of the fort items */
+h5 {
+    text-transform: uppercase;
+    text-align: center;
+}
+
 .wrapper {
     max-width: 1260px;
     width: 90%;

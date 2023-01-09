@@ -151,7 +151,10 @@ myFort.displayAssets = () => {
         }
 
         // The internal text for each fort item
-        newAsset.innerText = `${item.type}:\n\nhealth: ${item.health}`;
+        const itemTitle = document.createElement('h5');
+        itemTitle.innerText = item.type;
+        newAsset.appendChild(itemTitle);
+        newAsset.innerText = `\nhealth: ${item.health}`;
 
         // add it to the HTML
         myFortDiv.appendChild(newAsset);
