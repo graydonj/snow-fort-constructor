@@ -178,7 +178,7 @@ myFort.update = () => {
                 const getPenny = Math.random() * 10;
                 // console.log(getPenny);
                 if (getPenny < 1) {
-                    modifier = Math.random() * 0.2;
+                    modifier = Math.random() * 0.35;
                     myFort.curPennies = myFort.curPennies + Math.ceil(modifier * myFort.tools[selButton].snow);
                     console.log('modifier:', modifier);
                     console.log('pennies added:', Math.ceil(modifier * myFort.tools[selButton].snow));
