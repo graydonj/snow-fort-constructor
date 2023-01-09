@@ -33,14 +33,14 @@ const fortPieces = [
         type: 'Tower',
         cost: 100,
         defence: 5,
-        health: 15,
+        health: 25,
         totalHealth: 25,
     },
     {
         type: 'Fortification',
         cost: 500,
         defence: 5,
-        health: 5,
+        health: 50,
         totalHealth: 50,
     },
     {
@@ -179,7 +179,8 @@ myFort.update = () => {
                 const getPenny = Math.random() * 10;
                 console.log(getPenny);
                 if (getPenny < 1) {
-                    myFort.curPennies++;
+                    modifier = Math.random() * 2;
+                    myFort.curPennies = myFort.curPennies + Math.ceil(modifier * myFort.tools[selButton].snow);
                 }
                 myFort.displayCurrency();
             } else {
