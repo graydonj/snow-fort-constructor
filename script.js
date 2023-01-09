@@ -129,8 +129,7 @@ myFort.displayCurrency = () => {
 myFort.updateAmount = (index) => {
     const toolsSection = document.querySelector('.tools');
     toolsSection.children[index+1].children[3].innerText = `amount: ${myFort.tools[index].amount}`;
-    console.log(toolsSection);
-    
+    // console.log(toolsSection);
 }
 
 // DISPLAY ASSETS
@@ -177,9 +176,9 @@ myFort.update = () => {
             if (myFort.tools[selButton].amount > 0) {
                 myFort.curSnow += (myFort.tools[selButton].snow * myFort.tools[selButton].amount);
                 const getPenny = Math.random() * 10;
-                console.log(getPenny);
+                // console.log(getPenny);
                 if (getPenny < 1) {
-                    modifier = Math.random() * 2;
+                    modifier = Math.random() * 0.2;
                     myFort.curPennies = myFort.curPennies + Math.ceil(modifier * myFort.tools[selButton].snow);
                     console.log('modifier:', modifier);
                     console.log('pennies added:', Math.ceil(modifier * myFort.tools[selButton].snow));
