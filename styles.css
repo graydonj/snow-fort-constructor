@@ -63,7 +63,7 @@ button:focus {
 }
 
 button:active {
-    scale: 0.95;
+    scale: 0.9;
     transition: 0.5s;
 }
 
