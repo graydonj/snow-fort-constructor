@@ -53,7 +53,7 @@ button {
     border: 1px solid blue;
     display: block;
     cursor: pointer;
-    border-radius: 5%;
+    border-radius: 10px;
 }
 
 button:hover,
