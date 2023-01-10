@@ -53,6 +53,18 @@ button {
     border: 1px solid blue;
     display: block;
     cursor: pointer;
+    border-radius: 5%;
+}
+
+button:hover,
+button:focus {
+    background-color: lightskyblue;
+    transition: 0.7s;
+}
+
+button:active {
+    scale: 0.95;
+    transition: 0.5s;
 }
 
 p {
