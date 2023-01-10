@@ -37,7 +37,6 @@ h5 {
 }
 
 section {
-    border: 2px solid grey;
     margin: 5px 0;
     display: flex;
     justify-content: space-evenly;
@@ -64,7 +63,7 @@ button:focus {
 
 button:active {
     scale: 0.9;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 
 p {
@@ -82,7 +81,7 @@ p {
 }
 
 .buttons-wrapper h2 {
-    padding: 0 15px;
+    padding: 0 10px;
 }
 
 .current-snow,
@@ -133,10 +132,12 @@ p {
     background: linear-gradient(white, #9198e5);
 }
 
-.tools {
-    background: linear-gradient(white, coral);
+.buttons-tools {
+    background: linear-gradient(white, coral 35%);
+    border: 2px solid grey;
 }
 
-.fort-pieces {
-    background: linear-gradient(white, forestgreen)
+.buttons-fort-pieces {
+    background: linear-gradient(white, forestgreen 35%);
+    border: 2px solid grey;
 }

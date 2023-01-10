@@ -74,9 +74,9 @@ fortPieces.forEach((item) => {
 myFort.constructToolButtons = () => {
     const toolsSection = document.querySelector('.tools');
     //toolsSection.innerText = '';
-    const title = document.createElement('h2');
-    title.innerText = 'TOOLS';
-    toolsSection.appendChild(title);
+    // const title = document.createElement('h2');
+    // title.innerText = 'TOOLS';
+    // toolsSection.appendChild(title);
 
     myFort.tools.forEach((item) => {
         const buttonDiv = document.createElement('div');
