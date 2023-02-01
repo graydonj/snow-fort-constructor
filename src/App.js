@@ -1,6 +1,6 @@
 import firebase from './firebase';
 import { useState, useEffect } from 'react';
-import { getDatabase, onValue, push, remove, ref } from 'firebase/database';
+import { getDatabase, onValue, ref } from 'firebase/database';
 import './styles.css';
 
 // import our components
@@ -53,6 +53,9 @@ function App() {
       <div className="wrapper">
         <p>You start with 1 pair of mittens...and build an empire!</p>
         <p>Click on a tool (mittens, trowel, shovel) to collect that amount of snow. You have a small chance to find pennies. Use the pennies to buy more tools. Use the snow you collect to buy parts for your fort!</p>
+
+        setSnow(0);
+        setPennies(0);
 
         <DisplayBank snow={snow} pennies={pennies}/>
         <div className="buttons-wrapper">
