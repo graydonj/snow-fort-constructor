@@ -8,56 +8,37 @@ import DisplayTools from './components/DisplayTools';
 import DisplayFortPieces from './components/DisplayFortPieces';
 import DisplayBank from './components/DisplayBank';
 
+// set some global variables
+const pennyChance = 0.5; // chance to find pennies is ~50% for each unit of snow you shovel
+const userID = "graydon"; // as a stretch goal, we will query for userID but for now...
+
+// our database
+const database = getDatabase(firebase);
+
 function App() {
-  // our state
-  const [tools, setTools] = useState([]);
+  // our fort pieces state for the app
   const [fortPieces, setFortPieces] = useState([]);
 
-  // chance to find pennies is 50% for each unit of snow you shovel
-  const pennyChance = 0.5;
-
-  // state values for this user
-  const userID = "graydon";
+// state values for this user: key, snow, pennies, their tools, and their fort
   const [userKey, setUserKey] = useState("");
   const [snow, setSnow] = useState(0);
   const [pennies, setPennies] = useState(0);
   const [myTools, setMyTools] = useState([]);
   const [myFort, setMyFort] = useState([]);
 
-  // our database
-  const database = getDatabase(firebase);
-  // const myToolsRef = ref(database, userKey + "/tools");
-
-  // if we update the user tools in the database, then update myTools
-  // onValue(myToolsRef, (result) => {
-  //   const toolsObj = result.val();
-  //   const newToolsArray = [];
-
-  //   // go through the tools in the database
-  //   for (let tool in toolsObj) {
-  //     const toolObj = toolsObj.tools[tool];
-  //     newToolsArray.push( {name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow} );
-  //   }
-
-  //   // sort the tools into ascending order by cost
-  //   newToolsArray.sort((a,b) => a.cost - b.cost);
-  //   setMyTools(newToolsArray);
-  // })
-
-  // initialize our tools, fort pieces, and "my fort"
+  // initialize our tools, fort pieces, and user info
   useEffect( () => {
     // if this is a new user, we will create their database entry below
     let newUser = {};
+    const toolsArray = [];
 
     // initialize database call
-    // const database = getDatabase(firebase);
     const dbRef = ref(database);
     get(dbRef)
     .then((result) => {
 
       // get initial set of tools from database
       const dataObj = result.val();
-      const toolsArray = [];
       for (let tool in dataObj.tools) {
         const toolObj = dataObj.tools[tool];
         toolsArray.push({name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow});
@@ -65,7 +46,6 @@ function App() {
 
       // sort the array into ascending order by cost of tool
       toolsArray.sort((a,b) => a.cost - b.cost);
-      setTools(toolsArray);
 
       // get fort pieces from database
       const fortPiecesArray = [];
@@ -82,7 +62,7 @@ function App() {
       let newUserID = true;
       for (let users in dataObj) {
         if (dataObj[users].id == userID) {
-          const newToolsArray = [];
+          toolsArray.length = 0;
           const newFortArray = [];
 
           // set the state for the simple variables
@@ -94,20 +74,18 @@ function App() {
           for (let tool in dataObj[users].tools) {
             const toolObj = dataObj[users].tools[tool];
             const toolItem = { name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow };
-            newToolsArray.push(toolItem);
+            toolsArray.push(toolItem);
           }
 
           // sort the array into ascending order by cost of tool
-          newToolsArray.sort((a, b) => a.cost - b.cost);
-          console.log('User exists and their tools are: ', newToolsArray);
-          setMyTools(newToolsArray);
+          toolsArray.sort((a, b) => a.cost - b.cost);
+          console.log('User exists and their tools are: ', toolsArray);
 
           // parse the database fort object into an array to put into state
           for (let fortItem in dataObj[users].fort) {
             newFortArray.push(fortItem);
           }
           setMyFort(newFortArray);
-          console.log('User exists:', users);
           newUserID = false;
         }
       }
@@ -134,60 +112,60 @@ function App() {
         console.log('New user created: ', newUser);
 
         // set the new user's current state
-        setMyTools(toolsArray);
-        setMyFort([]);
-        setSnow(newUser.snow);
-        setPennies(newUser.pennies);
-        
-        // push them to the database and get their key
         const newUserKey = push(dbRef, newUser).key;
         setUserKey(newUserKey);
+        setMyFort([]);
+        setSnow(newUser.snow);
+        setPennies(newUser.pennies);  
       }
+    
+      // no matter what, toolsArray is the new state of myTools
+      setMyTools(toolsArray);
     });
   }, [])
 
   const handleToolClick = (tool) => {
 
     // get the database @ our current user
-    // const database = getDatabase(firebase);
     const snowRef = ref(database, userKey + "/snow");
     const pennyRef = ref(database, userKey + "/pennies");
+    const toolRef = ref(database, userKey + "/tools/" + tool);
+
+    // get the tool from our database
+    get(toolRef)
+    .then ((result) => {
+      const toolObj = result.val();
 
     // determine amount of tools of clicked type we have, and how much snow each one generates
-    let numTools = 0;
-    let numSnow = 0;
-    myTools.forEach((item) => {
-      if (item.name == tool) {
-        numTools = item.number;
-        numSnow = item.snow;
+      const numTools = toolObj.number;
+      const numSnow = toolObj.snow;
+
+      // if we have 0 tools, give an error message
+      if (!numTools) {
+        if (tool != "mittens") tool += "s";
+        alert(`You don't have any ${tool}`);
+
+      } else {
+
+        // otherwise, increment the snow by the amount of snow for each tool of the clicked type
+        const newSnow = snow + (numTools * numSnow);
+        set(snowRef, newSnow);
+        setSnow(newSnow);
+
+        // ...and see if we don't find a penny or two
+        const pennyFound = (Math.random() * (1 + Math.floor((numTools / 10) * (numSnow / 10))));
+        if (pennyFound > pennyChance) {
+          const newPennies = pennies + Math.ceil(pennyFound);
+          set(pennyRef, newPennies);
+          setPennies(newPennies);
+        }
       }
     })
-
-    // if we have 0 tools, give an error message
-    if (!numTools) {
-      if (tool != "mittens") tool+="s";
-      alert(`You don't have any ${tool}`)
-
-    // otherwise, increment the snow by the amount of snow for each tool of the clicked type
-    } else {
-      const newSnow = snow + (numTools * numSnow);
-      set(snowRef, newSnow);
-      setSnow(newSnow);
-
-      // ...and see if we don't find a penny or two
-      const pennyFound = (Math.random() * (1 + Math.floor((numTools / 2) * (numSnow / 2))));
-      if (pennyFound > pennyChance) {
-        const newPennies = pennies + Math.ceil(pennyFound);
-        set(pennyRef, newPennies);
-        setPennies(newPennies);
-      }
-    }
   }
 
   const handleBuyTool = (tool) => {
 
     // get the database @ our current user
-    // const database = getDatabase(firebase);
     const penniesRef = ref(database, userKey + "/pennies");
     const toolsRef = ref(database, userKey + "/tools/" + tool);
     const toolNumberRef = ref(database, userKey + "/tools/" + tool + "/number");
@@ -202,7 +180,7 @@ function App() {
       // can we afford the tool in question?
       if (pennies < curCost) {
 
-            // if not, send error message
+        // if not, send error message
         if (tool != "mittens") tool += "s";
         alert(`You cannot afford to buy any ${tool}`);
 
@@ -216,6 +194,15 @@ function App() {
         // increment the number of tools in the database
         curNumber = curNumber + 1;
         set(toolNumberRef, curNumber);
+
+        // and update our myTools state
+        const newTools = [...myTools];
+        newTools.forEach((item) => {
+          if (item.name == tool) {
+            item.number = curNumber;
+          }
+        })
+        setMyTools(newTools);
       }
     })
   }
