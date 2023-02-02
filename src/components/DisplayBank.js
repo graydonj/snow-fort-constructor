@@ -1,14 +1,18 @@
 function DisplayBank ({snow, pennies}) {
   return (
     <section className="current-amounts">
-      <h3>❄️Snow:</h3>
-      <span className="current-snow">
-        {snow}
-      </span>
-      <h3>🪙Pennies:</h3>
-      <span className="current-pennies">
-        {pennies}
-      </span>
+      <div className="bank-div">
+        <h3>❄️Snow:</h3>
+        <span className="current-snow">
+          {snow}
+        </span>
+      </div>
+      <div className="bank-div">
+        <h3>🪙Pennies:</h3>
+        <span className="current-pennies">
+          {pennies}
+        </span>
+      </div>
     </section>
   )
 }

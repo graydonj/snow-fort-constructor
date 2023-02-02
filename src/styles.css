@@ -73,10 +73,18 @@ p {
     /* border: 1px solid red; */
 }
 
+.bank-div {
+  padding: 20px;
+}
+
+.bank-div h3 {
+  display: inline;
+}
+
 .buttons-wrapper {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     flex-wrap: wrap;
 }
 
@@ -87,8 +95,17 @@ p {
 .current-snow,
 .current-pennies {
     background-color: #ddd;
-    padding: 15px 20px;
+    padding: 10px 15px;
     border-radius: 50%;
+    margin-left: 50px;
+}
+
+.tool-amount {
+  background-color: #ddd;
+  padding: 5px;
+  margin: 0px;
+  border-radius: 50%;
+  display: block;
 }
 
 .fort-info {
@@ -132,12 +149,18 @@ p {
     background: linear-gradient(white, #9198e5);
 }
 
+.buttons-tools,
+.buttons-fort-pieces {
+  border: 2px solid grey;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
 .buttons-tools {
     background: linear-gradient(white, coral 35%);
-    border: 2px solid grey;
 }
 
 .buttons-fort-pieces {
     background: linear-gradient(white, forestgreen 35%);
-    border: 2px solid grey;
 }
