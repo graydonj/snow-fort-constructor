@@ -91,7 +91,7 @@ function App() {
           let newFortArray = [];
           for (let item in dataObj[users].fort) {
             const fortObj = dataObj[users].fort[item];
-            const fortItem = { name: item, defence: fortObj.defence, health: fortObj.health };
+            const fortItem = { id: item, name: fortObj.name, defence: fortObj.defence, health: fortObj.health };
             newFortArray.push(fortItem);
           }
           setMyFort(newFortArray);
@@ -219,7 +219,6 @@ function App() {
   }
 
   const handleBuyFortPiece = (fortPiece) => {
-    console.log(fortPiece);
 
     // get the database @ our current user
     const snowRef = ref(database, userKey + "/snow");
@@ -239,8 +238,9 @@ function App() {
 
       // add the fort piece to our fort and update our myFort state
       const newFort = [...myFort];
-      newFort.push(fortPiece);
-      push(userFortRef, fortPiece);
+      const newFortPiece = {...fortPiece};
+      newFortPiece.id = push(userFortRef, fortPiece).key;
+      newFort.push(newFortPiece);
       setMyFort(newFort);
     }
   }
