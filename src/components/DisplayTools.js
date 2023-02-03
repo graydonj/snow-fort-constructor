@@ -3,6 +3,8 @@ function DisplayTools ({tools, toolClick, toolBuy}) {
     <div className="buttons-tools">
       <h2>TOOLS</h2>
       <section className="tools">
+
+        {/* go through each tool, construct a tool button to display */}
         {tools.map((tool) => {
           return (
             <div key={tool.name} className="item-div">

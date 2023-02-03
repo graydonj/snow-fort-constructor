@@ -1,4 +1,4 @@
-function DisplayFortPieces({ fortPieces }) {
+function DisplayFortPieces({ fortPieces, fortBuy }) {
   return (
     <div className="buttons-fort-pieces">
       <h2>FORT PIECES</h2>
@@ -6,7 +6,7 @@ function DisplayFortPieces({ fortPieces }) {
         {fortPieces.map((fortPiece) => {
           return (
             <div key={fortPiece.name} className="item-div">
-              <button className="fort-button">{fortPiece.name}</button>
+              <button className="fort-button" onClick={()=>fortBuy(fortPiece)}>{fortPiece.name}</button>
               <p>cost: {fortPiece.cost}❄️</p>
               <p>defence: {fortPiece.defence}🛡️</p>
               <p>health: {fortPiece.health}🤍</p>

@@ -120,6 +120,22 @@ p {
     flex-wrap: wrap;
 }
 
+.player-info {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player {
+  padding: 10px;
+  border: 5px double blue;
+  background-color: lightblue;
+  color: black;
+  display: inline-block;
+  margin: auto;
+}
+
 .fort-item,
 .fort-item-dmg,
 .fort-item-xdmg {
