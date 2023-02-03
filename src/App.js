@@ -66,7 +66,7 @@ function App() {
       // is there a user by this name?
       let newUserID = true;
       for (let users in dataObj) {
-        if (dataObj[users].id == userID) {
+        if (dataObj[users].id === userID) {
           toolsArray.length = 0;
 
           // set the state for the simple variables
@@ -153,7 +153,7 @@ function App() {
 
       // if we have 0 tools, give an error message
       if (!numTools) {
-        if (tool != "mittens") tool += "s";
+        if (tool !== "mittens") tool += "s";
         alert(`You don't have any ${tool}`);
 
       } else {
@@ -192,7 +192,7 @@ function App() {
       if (pennies < curCost) {
 
         // if not, send error message
-        if (tool != "mittens") tool += "s";
+        if (tool !== "mittens") tool += "s";
         alert(`You cannot afford to buy any ${tool}`);
 
       } else {
@@ -209,7 +209,7 @@ function App() {
         // and update our myTools state
         const newTools = [...myTools];
         newTools.forEach((item) => {
-          if (item.name == tool) {
+          if (item.name === tool) {
             item.number = curNumber;
           }
         })
