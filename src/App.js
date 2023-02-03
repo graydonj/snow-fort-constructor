@@ -247,6 +247,7 @@ function App() {
 
   const removeFortItem = (item) => {
     console.log(item);
+    alert("Sorry, this functionality not implemented yet!")
   }
 
   // our main site!
