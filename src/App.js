@@ -1,6 +1,6 @@
 import firebase from './firebase';
 import { useState, useEffect } from 'react';
-import { getDatabase, push, ref, set, get } from 'firebase/database';
+import { getDatabase, push, ref, set, get, remove } from 'firebase/database';
 import './styles.css';
 
 // import our components
@@ -91,7 +91,7 @@ function App() {
           let newFortArray = [];
           for (let item in dataObj[users].fort) {
             const fortObj = dataObj[users].fort[item];
-            const fortItem = { id: item, name: fortObj.name, defence: fortObj.defence, health: fortObj.health };
+            const fortItem = { id: item, name: fortObj.name, defence: fortObj.defence, health: fortObj.health, cost: fortObj.cost };
             newFortArray.push(fortItem);
           }
           setMyFort(newFortArray);
@@ -246,8 +246,20 @@ function App() {
   }
 
   const removeFortItem = (item) => {
-    console.log(item);
-    alert("Sorry, this functionality not implemented yet!")
+
+    // access the user's snow and the fort piece we are removing in the database
+    const snowRef = ref(database, userKey + "/snow");
+    const itemRef = ref(database, userKey + "/fort/" + item.id);
+
+    // return some snow to the player
+    const curSnow = snow + Math.floor((item.cost / 5));
+    setSnow(curSnow);
+    set(snowRef, curSnow);
+
+    // remove the item from our state and our database
+    const newFortArray = myFort.filter((fortItem) => fortItem.id !== item.id);
+    setMyFort(newFortArray);
+    remove(itemRef);
   }
 
   // our main site!
@@ -263,12 +275,9 @@ function App() {
           <DisplayTools tools={myTools} toolClick={handleToolClick} toolBuy={handleBuyTool}/>
           <DisplayFortPieces fortPieces={fortPieces} fortBuy={handleBuyFortPiece}/>
         </div>
-        <div className="fort-info">
-          <DisplayFort fights={fights} fort={myFort} removeFortItem={removeFortItem} database={database} user={userKey}/>
-        </div>
-        <div className="player-info">
-          <DisplayPlayer player={userID} health={health}/>
-        </div>
+        <DisplayFort fights={fights} fort={myFort} removeFortItem={removeFortItem}
+        />
+        <DisplayPlayer player={userID} health={health} fort={myFort}/>
       </div>      
     </main>
   );

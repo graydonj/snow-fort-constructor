@@ -120,22 +120,6 @@ p {
     flex-wrap: wrap;
 }
 
-.player-info {
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.player {
-  padding: 10px;
-  border: 5px double blue;
-  background-color: lightblue;
-  color: black;
-  display: inline-block;
-  margin: auto;
-}
-
 .fort-item,
 .fort-item-dmg,
 .fort-item-xdmg {
@@ -179,4 +163,27 @@ p {
 
 .buttons-fort-pieces {
     background: linear-gradient(white, forestgreen 35%);
+}
+
+.player-info {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player {
+  padding: 10px;
+  border: 5px double blue;
+  background-color: lightblue;
+  color: black;
+  display: inline-block;
+  margin: auto;
+}
+
+.keep {
+  width: 100%;
+  border: 10px solid grey;
+  padding: 10px;
+  background-color: lightgreen;
 }
