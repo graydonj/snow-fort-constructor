@@ -9,7 +9,6 @@ import DisplayFortPieces from './components/DisplayFortPieces';
 import DisplayBank from './components/DisplayBank';
 import DisplayFort from './components/DisplayFort';
 import DisplayPlayer from './components/DisplayPlayer';
-import { getSuggestedQuery } from '@testing-library/react';
 
 // set some global variables
 const pennyChance = 0.5; // chance to find pennies is ~50% for each unit of snow you shovel

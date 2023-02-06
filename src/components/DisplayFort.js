@@ -1,4 +1,4 @@
-import DisplayFortSection from "./DisplayFortSection";
+/* import DisplayFortSection from "./DisplayFortSection"; */
 
 function DisplayFort ({fights, fort, removeFortItem}) {
   const fightText = (fights === 0) ? "No snowball fights yet!"
