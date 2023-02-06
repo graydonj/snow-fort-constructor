@@ -267,6 +267,10 @@ function App() {
     <main>
       <h1>Snow Fort Constructor</h1>
       <div className="wrapper">
+        <span className="snowflake-one">❄️</span>
+        <span className="snowflake-two">❄️</span>
+        <span className="snowflake-three">❄️</span>
+        <span className="snowflake-four">❄️</span>
         <p>You start with 1 pair of mittens...and build an empire!</p>
         <p>Click on a tool (mittens, trowel, shovel) to collect that amount of snow. You have a small chance to find pennies. Use the pennies to buy more tools. Use the snow you collect to buy parts for your fort!</p>
 

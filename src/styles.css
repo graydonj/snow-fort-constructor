@@ -31,34 +31,34 @@ h5 {
 }
 
 .wrapper {
-    max-width: 1260px;
-    width: 90%;
-    margin: 0 auto;
+  max-width: 1260px;
+  width: 90%;
+  margin: 0 auto;
 }
 
 section {
-    margin: 5px 0;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-wrap: wrap;
+  margin: 5px 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 button {
-    background-color: white;
-    color: #333;
-    padding: 20px;
-    margin: 5px auto;
-    border: 1px solid blue;
-    display: block;
-    cursor: pointer;
-    border-radius: 10px;
+  background-color: white;
+  color: #333;
+  padding: 20px;
+  margin: 5px auto;
+  border: 1px solid blue;
+  display: block;
+  cursor: pointer;
+  border-radius: 10px;
 }
 
 button:hover,
 button:focus {
-    background-color: lightskyblue;
-    transition: 0.7s;
+  background-color: lightskyblue;
+  transition: 0.7s;
 }
 
 button:active {
@@ -118,9 +118,34 @@ p {
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.fort-section {
+  position: relative;
+  width: 95%;
+  margin-top: 40px;
+  padding-top: 10px;
+  padding-bottom: 0px;
+  border: 2px dotted grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.fort-section h4 {
+  padding: 5px;
+  position: absolute;
+  top: -60px;
+  left: -2px;
+  background-color: lightgreen;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .fort-item,
+.fort-item-keep,
 .fort-item-dmg,
 .fort-item-xdmg {
     padding: 10px;
@@ -128,6 +153,14 @@ p {
     border: 1px solid black;
     background-color: lightgreen;
     color: darkgreen;
+}
+
+.fort-item-keep {
+  padding: 5px;
+}
+
+.fort-item-keep button {
+  padding: 5px;
 }
 
 .fort-item-dmg {
@@ -186,4 +219,53 @@ p {
   border: 10px solid grey;
   padding: 10px;
   background-color: lightgreen;
+}
+
+.snowflake-one,
+.snowflake-two,
+.snowflake-three,
+.snowflake-four {
+  top: -50vh;
+  position: absolute;
+  opacity: 20%;
+  z-index: -1;
+  overflow: hidden;
+  animation: falling-one 30s infinite ease;
+}
+
+.snowflake-two {
+  left: 30vw;
+  animation-delay: 4s;
+  animation-name: falling-two;
+}
+
+.snowflake-three {
+  left: 55vw;
+  animation-delay: 15s;
+}
+
+.snowflake-four {
+  left: 75vw;
+  animation-delay: 8s;
+  animation-name: falling-two;
+}
+
+@keyframes falling-one {
+  0% {
+    transform: translateY(-50vh) translateX(-10vw) scale(20) rotate(100deg);
+  }
+
+  100% {
+    transform: translateY(300vh) translateX(10vw) scale(10) rotate(0deg);
+  }
+}
+
+@keyframes falling-two {
+  0% {
+    transform: translateY(-50vh) translateX(30vw) scale(10) rotate(0deg);
+  }
+
+  100% {
+    transform: translateY(300vh) translateX(10vw) scale(20) rotate(150deg);
+  }
 }
