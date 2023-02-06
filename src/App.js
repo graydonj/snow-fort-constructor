@@ -9,20 +9,25 @@ import DisplayFortPieces from './components/DisplayFortPieces';
 import DisplayBank from './components/DisplayBank';
 import DisplayFort from './components/DisplayFort';
 import DisplayPlayer from './components/DisplayPlayer';
+import { getSuggestedQuery } from '@testing-library/react';
 
 // set some global variables
 const pennyChance = 0.5; // chance to find pennies is ~50% for each unit of snow you shovel
 const initHealth = 100; // player's initial health amount
-const userID = "graydon"; // as a stretch goal, we will query for userID but for now...
+// const userID = ""; // as a stretch goal, we will query for userID but for now...
 
 // our database
 const database = getDatabase(firebase);
 
 function App() {
+  // userID input state
+  const [input, setInput] = useState("");
+
   // our fort pieces state for the app
   const [fortPieces, setFortPieces] = useState([]);
 
-// state values for this user: key, snow, pennies, their tools, their fort, health, and # of snowball fights they have been in!
+  // state values for this user: ID, key, snow, pennies, their tools, their fort, health, and # of snowball fights they have been in!
+  const [userID, setUserID] = useState("");
   const [userKey, setUserKey] = useState("");
   const [snow, setSnow] = useState(0);
   const [pennies, setPennies] = useState(0);
@@ -33,107 +38,161 @@ function App() {
 
   // initialize our tools, fort pieces, and user info
   useEffect( () => {
-    // if this is a new user, we will create their database entry below
-    let newUser = {};
+
+    // first, a quick check to get session data
+    const sessionUser = sessionStorage.getItem("userID");
+    if (sessionUser) {
+      setInput(sessionUser);
+      getUser(sessionUser);
+    } else {
+
+      // initialize an empty array to load default tools
+      const toolsArray = [];
+
+      // initialize database call
+      const dbRef = ref(database);
+      get(dbRef)
+      .then((result) => {
+
+        // get initial set of tools from database
+        const dataObj = result.val();
+        for (let tool in dataObj.tools) {
+          const toolObj = dataObj.tools[tool];
+          toolsArray.push({name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow});
+        }
+
+        // sort the array into ascending order by cost of tool
+        toolsArray.sort((a,b) => a.cost - b.cost);
+        setMyTools(toolsArray);
+      });
+    }
+
+    // get fort pieces from database
+    const dbRef = ref(database);
+    get(dbRef)
+      .then((result) => {
+
+        const dataObj = result.val();
+        const fortPiecesArray = [];
+        for (let fortPiece in dataObj.fortPieces) {
+          const fortPieceObj = dataObj.fortPieces[fortPiece];
+          fortPiecesArray.push({name: fortPiece, cost: fortPieceObj.cost, defence: fortPieceObj.defence, health: fortPieceObj.health});
+        }
+
+        // sort the fort pieces into ascending order by cost
+        fortPiecesArray.sort((a,b) => a.cost - b.cost);
+        setFortPieces(fortPiecesArray);
+      });
+  }, [])
+
+  const handleInput = (event) => {
+    setInput(event.target.value);
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    getUser(input);
+  }
+
+  const getUser = (thisUser) => {
+
+    // presume we have a new user:
+    // set up array to store tool info, and a newUser object
     const toolsArray = [];
+    let newUserID = true;
+    let newUser = {};
 
     // initialize database call
     const dbRef = ref(database);
     get(dbRef)
-    .then((result) => {
+      .then((result) => {
 
-      // get initial set of tools from database
-      const dataObj = result.val();
-      for (let tool in dataObj.tools) {
-        const toolObj = dataObj.tools[tool];
-        toolsArray.push({name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow});
-      }
+        // put the data into our dataObj
+        const dataObj = result.val();
 
-      // sort the array into ascending order by cost of tool
-      toolsArray.sort((a,b) => a.cost - b.cost);
+        // is there a user by this name?
+        for (let users in dataObj) {
+          if (dataObj[users].id === thisUser) {
 
-      // get fort pieces from database
-      const fortPiecesArray = [];
-      for (let fortPiece in dataObj.fortPieces) {
-        const fortPieceObj = dataObj.fortPieces[fortPiece];
-        fortPiecesArray.push({name: fortPiece, cost: fortPieceObj.cost, defence: fortPieceObj.defence, health: fortPieceObj.health});
-      }
+            // set the state for the simple variables
+            setUserKey(users);
+            setSnow(dataObj[users].snow);
+            setPennies(dataObj[users].pennies);
+            setHealth(dataObj[users].health);
+            setFights(dataObj[users].fights);
 
-      // sort the fort pieces into ascending order by cost
-      fortPiecesArray.sort((a,b) => a.cost - b.cost);
-      setFortPieces(fortPiecesArray);
+            // parse the database tools object into an array to put into state
+            for (let tool in dataObj[users].tools) {
+              const toolObj = dataObj[users].tools[tool];
+              const toolItem = { name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow };
+              toolsArray.push(toolItem);
+            }
 
-      // is there a user by this name?
-      let newUserID = true;
-      for (let users in dataObj) {
-        if (dataObj[users].id === userID) {
-          toolsArray.length = 0;
+            // sort the array into ascending order by cost of tool
+            toolsArray.sort((a, b) => a.cost - b.cost);
+            // console.log('User exists and their tools are: ', toolsArray);
 
-          // set the state for the simple variables
-          setUserKey(users);
-          setSnow(dataObj[users].snow);
-          setPennies(dataObj[users].pennies);
-          setHealth(dataObj[users].health);
-          setFights(dataObj[users].fights);
+            // parse the database fort object into an array to put into state
+            const newFortArray = [];
+            for (let item in dataObj[users].fort) {
+              const fortObj = dataObj[users].fort[item];
+              const fortItem = { id: item, name: fortObj.name, defence: fortObj.defence, health: fortObj.health, cost: fortObj.cost };
+              newFortArray.push(fortItem);
+            }
+            setMyFort(newFortArray);
+            newUserID = false;
+          }
+        }
 
-          // parse the database tools object into an array to put into state
-          for (let tool in dataObj[users].tools) {
-            const toolObj = dataObj[users].tools[tool];
-            const toolItem = { name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow };
-            toolsArray.push(toolItem);
+        // set up potential new user
+        if (newUserID) {
+          // create the user
+          const userTools = {};
+          for (let tool in dataObj.tools) {
+            const toolObj = dataObj.tools[tool];
+            toolsArray.push({ name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow });
+            userTools[tool] = {
+              cost: toolObj.cost,
+              number: toolObj.number,
+              snow: toolObj.snow
+            }
           }
 
           // sort the array into ascending order by cost of tool
           toolsArray.sort((a, b) => a.cost - b.cost);
-          // console.log('User exists and their tools are: ', toolsArray);
+          console.log("New user toolsArray:", toolsArray);
+          console.log("New userTools:", userTools);
 
-          // parse the database fort object into an array to put into state
-          let newFortArray = [];
-          for (let item in dataObj[users].fort) {
-            const fortObj = dataObj[users].fort[item];
-            const fortItem = { id: item, name: fortObj.name, defence: fortObj.defence, health: fortObj.health, cost: fortObj.cost };
-            newFortArray.push(fortItem);
+          newUser = {
+            id: thisUser,
+            tools: userTools,
+            fort: {},
+            snow: 0,
+            pennies: 0,
+            health: initHealth,
+            fights: 0,
           }
-          setMyFort(newFortArray);
-          newUserID = false;
-        }
-      }
-        
-      // set up potential new user
-      if (newUserID) {
-        // create the user
-        const userTools = {};
-        toolsArray.forEach((tool) => {
-          userTools[tool.name] = {
-            cost: tool.cost,
-            number: tool.number,
-            snow: tool.snow
-          }
-        })
+          // console.log('New user created: ', newUser);
 
-        newUser = {
-          id: userID,
-          tools: userTools,
-          fort: {},
-          snow: 0,
-          pennies: 0,
-          health: initHealth,
-          fights: 0,
+          // set the new user's current state
+          const newUserKey = push(dbRef, newUser).key;
+          setUserKey(newUserKey);
+          setMyFort([]);
+          setSnow(newUser.snow);
+          setPennies(newUser.pennies);
+          setHealth(initHealth);
+          setFights(0);
         }
-        // console.log('New user created: ', newUser);
 
-        // set the new user's current state
-        const newUserKey = push(dbRef, newUser).key;
-        setUserKey(newUserKey);
-        setMyFort([]);
-        setSnow(newUser.snow);
-        setPennies(newUser.pennies);  
-      }
-    
-      // no matter what, toolsArray is the new state of myTools
-      setMyTools(toolsArray);
-    });
-  }, [])
+        // no matter what, toolsArray is the new state of myTools
+        setMyTools(toolsArray);
+      });
+
+    // set our userID in state and in session data, then reset the input
+    setUserID(thisUser);
+    sessionStorage.setItem("userID", thisUser);
+    setInput("");
+  }
 
   const handleToolClick = (tool) => {
 
@@ -262,6 +321,12 @@ function App() {
     remove(itemRef);
   }
 
+  const handleLogout = () => {
+    sessionStorage.setItem("userID", "");
+    setInput("");
+    setUserID("");
+  }
+
   // our main site!
   return (
     <main>
@@ -274,15 +339,26 @@ function App() {
         <p>You start with 1 pair of mittens...and build an empire!</p>
         <p>Click on a tool (mittens, trowel, shovel) to collect that amount of snow. You have a small chance to find pennies. Use the pennies to buy more tools. Use the snow you collect to buy parts for your fort!</p>
 
-        <DisplayBank snow={snow} pennies={pennies}/>
-        <div className="buttons-wrapper">
-          <DisplayTools tools={myTools} toolClick={handleToolClick} toolBuy={handleBuyTool}/>
-          <DisplayFortPieces fortPieces={fortPieces} fortBuy={handleBuyFortPiece}/>
-        </div>
-        <DisplayFort fights={fights} fort={myFort} removeFortItem={removeFortItem}
-        />
-        <DisplayPlayer player={userID} health={health} fort={myFort}/>
-      </div>      
+        { userID ? (
+          <>
+          <button className="logout" onClick={handleLogout}>Logout</button>
+          <DisplayBank snow={snow} pennies={pennies}/>
+          <div className="buttons-wrapper">
+            <DisplayTools tools={myTools} toolClick={handleToolClick} toolBuy={handleBuyTool}/>
+            <DisplayFortPieces fortPieces={fortPieces} fortBuy={handleBuyFortPiece}/>
+          </div>
+          <DisplayFort fights={fights} fort={myFort} removeFortItem={removeFortItem}
+          />
+          <DisplayPlayer player={userID} health={health} fort={myFort}/>
+          </>)
+        : (
+            <form action="submit">
+              <label htmlFor="newUser">Input Your Snowfort ID: </label>
+              <input onChange={handleInput} type="text" id="newUser" value={input}/>
+              <button onClick={handleSubmit}>Let's Fort!</button>
+            </form>
+        ) }
+      </div>
     </main>
   );
 }
