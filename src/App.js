@@ -1,6 +1,7 @@
 import firebase from './firebase';
 import { useState, useEffect } from 'react';
 import { getDatabase, push, ref, set, get, remove } from 'firebase/database';
+import Swal from 'sweetalert2';
 import './styles.css';
 
 // import our components
@@ -212,7 +213,12 @@ function App() {
       // if we have 0 tools, give an error message
       if (!numTools) {
         if (tool !== "mittens") tool += "s";
-        alert(`You don't have any ${tool}`);
+        Swal.fire({
+          icon: "error",
+          title: "Zoinks!",
+          text: `You don't have any ${tool}`,
+          footer: "TIP: When you dig snow, you may find pennies. Use pennies to buy more tools by clicking the COST button under the tool!"
+        });
 
       } else {
 
@@ -251,7 +257,12 @@ function App() {
 
         // if not, send error message
         if (tool !== "mittens") tool += "s";
-        alert(`You cannot afford to buy any ${tool}`);
+        Swal.fire({
+          icon: "error",
+          title: "Gasp!",
+          text: `You cannot afford to buy any ${tool}`,
+          footer: "TIP: When you dig snow, you may find pennies. Use pennies to buy more tools by clicking the COST button under the tool!"
+        });
 
       } else {
 
@@ -286,7 +297,12 @@ function App() {
     if (snow < fortPiece.cost) {
 
       // if not, send error message
-      alert(`You don't have enough SNOW to build any ${fortPiece.name}s`);
+      Swal.fire({
+        icon: "error",
+        title: "Ding Dang It!",
+        text: `You don't have enough SNOW to build any ${fortPiece.name}s`,
+        footer: "TIP: Dig snow by clicking the TOOL buttons. You dig snow for each tool you own, so if you have 3 Mittens, you'll dig 3 Snow with each click. Buy more tools -- get more snow!"
+      });
     } else {
 
       // if so, decrement the snow
