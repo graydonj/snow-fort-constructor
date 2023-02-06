@@ -1,14 +1,13 @@
-function DisplayFortSection({ type, fort, removeFortItem }) {
-  console.log("type:", type);
-  
-  fort.map((fortItem) =>
-    (fortItem.name === type) ? (
-      <div key={fortItem.id} className="fort-item">
-        <h5>{fortItem.name}</h5>
-        <p>{fortItem.health}🤍 | {fortItem.defence}🛡️</p>
-        <button onClick={() => removeFortItem(fortItem)}>remove</button>
-      </div>
-    ) : console.log(fortItem.name));
+function DisplayFortSection({ fortItem, removeFortItem }) {
+  const {id, name, health, defence} = fortItem;
+
+  return (
+    <div key={id} className="fort-item">
+      <h5>{name}</h5>
+      <p>{health}🤍 | {defence}🛡️</p>
+      <button onClick={() => removeFortItem(fortItem)}>remove</button>
+    </div>
+  )
 }
 
 export default DisplayFortSection;

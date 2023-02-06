@@ -9,11 +9,11 @@ import DisplayFortPieces from './components/DisplayFortPieces';
 import DisplayBank from './components/DisplayBank';
 import DisplayFort from './components/DisplayFort';
 import DisplayPlayer from './components/DisplayPlayer';
+import UserLogin from './components/UserLogin';
 
 // set some global variables
 const pennyChance = 0.5; // chance to find pennies is ~50% for each unit of snow you shovel
 const initHealth = 100; // player's initial health amount
-// const userID = ""; // as a stretch goal, we will query for userID but for now...
 
 // our database
 const database = getDatabase(firebase);
@@ -159,8 +159,8 @@ function App() {
 
           // sort the array into ascending order by cost of tool
           toolsArray.sort((a, b) => a.cost - b.cost);
-          console.log("New user toolsArray:", toolsArray);
-          console.log("New userTools:", userTools);
+          // console.log("New user toolsArray:", toolsArray);
+          // console.log("New userTools:", userTools);
 
           newUser = {
             id: thisUser,
@@ -331,10 +331,6 @@ function App() {
     <main>
       <h1>Snow Fort Constructor</h1>
       <div className="wrapper">
-        <span className="snowflake-one">❄️</span>
-        <span className="snowflake-two">❄️</span>
-        <span className="snowflake-three">❄️</span>
-        <span className="snowflake-four">❄️</span>
         <p>You start with 1 pair of mittens...and build an empire!</p>
         <p>Click on a tool (mittens, trowel, shovel) to collect that amount of snow. You have a small chance to find pennies. Use the pennies to buy more tools. Use the snow you collect to buy parts for your fort!</p>
 
@@ -351,12 +347,12 @@ function App() {
           <DisplayPlayer player={userID} health={health} fort={myFort}/>
           </>)
         : (
-            <form action="submit">
-              <label htmlFor="newUser">Input Your Snowfort ID: </label>
-              <input onChange={handleInput} type="text" id="newUser" value={input}/>
-              <button onClick={handleSubmit}>Let's Fort!</button>
-            </form>
+            <UserLogin input={input} handleInput={handleInput} handleSubmit={handleSubmit}/>
         ) }
+      <span className="snowflake-one">❄️</span>
+      <span className="snowflake-two">❄️</span>
+      <span className="snowflake-three">❄️</span>
+      <span className="snowflake-four">❄️</span>
       </div>
     </main>
   );

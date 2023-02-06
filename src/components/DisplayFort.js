@@ -1,4 +1,4 @@
-/* import DisplayFortSection from "./DisplayFortSection"; */
+import DisplayFortSection from "./DisplayFortSection";
 
 function DisplayFort ({fights, fort, removeFortItem}) {
   const fightText = (fights === 0) ? "No snowball fights yet!"
@@ -32,32 +32,35 @@ function DisplayFort ({fights, fort, removeFortItem}) {
           })*/}
           {fort.map((fortItem) =>
             (fortItem.name === "wall") ? (
-              <div key={fortItem.id} className="fort-item">
-                <h5>{fortItem.name}</h5>
-                <p>{fortItem.health}🤍 | {fortItem.defence}🛡️</p>
-                <button onClick={()=>removeFortItem(fortItem)}>remove</button>
-              </div>
+              // <div key={fortItem.id} className="fort-item">
+              //   <h5>{fortItem.name}</h5>
+              //   <p>{fortItem.health}🤍 | {fortItem.defence}🛡️</p>
+              //   <button onClick={()=>removeFortItem(fortItem)}>remove</button>
+              // </div>
+              <DisplayFortSection fortItem={fortItem} removeFortItem={removeFortItem}/>
               ) : null )}
           {/* <DisplayFortSection type="wall" fort={fort} removeFortItem={removeFortItem}/> */}
         </div>
         <div className="fort-section"><h4>FORTIFICATIONS</h4>
           {fort.map((fortItem) =>
             (fortItem.name === "fortification") ? (
-              <div key={fortItem.id} className="fort-item">
-                <h5>{fortItem.name}</h5>
-                <p>{fortItem.health}🤍 | {fortItem.defence}🛡️</p>
-                <button onClick={() => removeFortItem(fortItem)}>remove</button>
-              </div>
+              // <div key={fortItem.id} className="fort-item">
+              //   <h5>{fortItem.name}</h5>
+              //   <p>{fortItem.health}🤍 | {fortItem.defence}🛡️</p>
+              //   <button onClick={() => removeFortItem(fortItem)}>remove</button>
+              // </div>
+              <DisplayFortSection fortItem={fortItem} removeFortItem={removeFortItem} />
             ) : null)}
         </div>
         <div className="fort-section"><h4>TOWERS</h4>
           {fort.map((fortItem) =>
             (fortItem.name === "tower") ? (
-              <div key={fortItem.id} className="fort-item">
-                <h5>{fortItem.name}</h5>
-                <p>{fortItem.health}🤍 | {fortItem.defence}🛡️</p>
-                <button onClick={() => removeFortItem(fortItem)}>remove</button>
-              </div>
+              // <div key={fortItem.id} className="fort-item">
+              //   <h5>{fortItem.name}</h5>
+              //   <p>{fortItem.health}🤍 | {fortItem.defence}🛡️</p>
+              //   <button onClick={() => removeFortItem(fortItem)}>remove</button>
+              // </div>
+              <DisplayFortSection fortItem={fortItem} removeFortItem={removeFortItem} />
             ) : null)}
         </div>
         <div className="fort-section"><h4>KEEPS</h4>
