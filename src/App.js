@@ -445,7 +445,7 @@ function App() {
 
         // apply defence value (which is defence * full health) to reduce damage
         damage = damage - (baseDefence * baseHealth);
-        console.log("After shielding from ", type, ": ", damage);
+        // console.log("After shielding from ", type, ": ", damage);
 
         // if we still have more damage than the object's base health...
         if (damage > baseHealth) {
