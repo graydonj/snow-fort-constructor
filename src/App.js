@@ -16,6 +16,7 @@ import UserLogin from './components/UserLogin';
 const pennyChance = 0.5; // chance to find pennies is ~50% for each unit of snow you shovel
 const initHealth = 100; // player's initial health amount
 let userKey = ""; // player's location in the database
+const baseDMG = 2000; // base damage for snow fight calculations
 
 // our database
 const database = getDatabase(firebase);
@@ -124,12 +125,6 @@ function App() {
 
             // our user exists, so set their database ID in userKey
             userKey = users;
-
-            // set the state for the simple variables
-            setHealth(dataObj[users].health);
-            setFights(dataObj[users].fights);
-
-            // turns out we didn't have a new user!
             newUserID = false;
           }
         }
@@ -161,13 +156,13 @@ function App() {
           // set the new user's current state
           const newUserKey = push(dbRef, newUser).key;
           userKey = newUserKey;
-          setHealth(initHealth);
-          setFights(0);
         }
 
         // create data listeners for the user
         const snowRef = ref(database, userKey + "/snow");
         const pennyRef = ref(database, userKey + "/pennies");
+        const healthRef = ref(database, userKey + "/health");
+        const fightsRef = ref(database, userKey + "/fights");
         const toolsRef = ref(database, userKey + "/tools");
         const fortRef = ref(database, userKey + "/fort")
 
@@ -182,6 +177,18 @@ function App() {
           const userPennies = data.val();
           setPennies(userPennies);
         });
+
+        // HEALTH listener
+        onValue(healthRef, (data) => {
+          const userHealth = data.val();
+          setHealth(userHealth);
+        })
+
+        // FIGHTS listener
+        onValue(fightsRef, (data) => {
+          const userFights = data.val();
+          setFights(userFights);
+        })
 
         // TOOLS listener
         onValue(toolsRef, (data) => {
@@ -351,8 +358,8 @@ function App() {
       Swal.fire({
         icon: "error",
         title: "Ding Dang It!",
-        text: `You don't have enough SNOW to build any ${fortPiece.name}s`,
-        footer: "TIP: Dig snow by clicking the TOOL buttons. You dig snow for each tool you own, so if you have 3 Mittens, you'll dig 3 Snow with each click. Buy more tools -- get more snow!"
+        html: `You don't have enough SNOW to build any ${fortPiece.name}s` +
+        "<p><b>TIP: Dig snow by clicking the TOOL buttons.</b></p><p>You dig snow for each tool you own, so if you have 3 Mittens, you'll dig 3 Snow with each click.</p><p>Buy more tools -- get more snow!</p>"
       });
     } else {
 
@@ -422,6 +429,101 @@ function App() {
     setUserID("");
   }
 
+  const DamageFort = (type, index, fortObj, curDMG) => {
+    
+    // set damage
+    let damage = curDMG;
+
+    // loop through the fort, damaging fort pieces that match "type"
+    for (let fortPiece in fortObj) {
+      const fortPieceRef = ref(database, userKey + "/fort/" + fortPiece);
+      const fortPieceHealthRef = ref(database, userKey + "/fort/" + fortPiece + "/health");
+      const fortPieceObj = fortObj[fortPiece];
+      if (fortPieceObj.name === type) {
+        const baseHealth = fortPieces[index].health;
+        const baseDefence = fortPieces[index].defence;
+
+        // apply defence value (which is defence * full health) to reduce damage
+        damage = damage - (baseDefence * baseHealth);
+        console.log("After shielding from ", type, ": ", damage);
+
+        // if we still have more damage than the object's base health...
+        if (damage > baseHealth) {
+
+          // apply damage
+          const thisDMG = Math.floor(baseHealth * (1 - (baseDefence / (10 + Math.random() * 10))));
+          if (thisDMG > fortPieceObj.health) {
+            remove(fortPieceRef);
+          } else {
+            set(fortPieceHealthRef, (fortPieceObj.health - thisDMG));
+          }
+          damage = damage - thisDMG;
+        } else if (damage > 0) {
+          // we have less damage than the object's health, but not zero!
+          set(fortPieceHealthRef, (fortPieceObj.health - damage));
+          damage = 0;
+        }
+      }
+    }
+
+    // return the remaining damage
+    return damage;
+  }
+
+  const handleFight = () => {
+    let damage = Math.floor(baseDMG * ((fights + 1) * 1.1) + (Math.floor(Math.random() * (baseDMG/10))));
+    Swal.fire({
+      icon: "success",
+      title: "SNOWBALL FIGHT!",
+      text: `Incoming damage...${damage} snowballs!`,
+    });
+
+    const fortRef = ref(database, userKey + "/fort");
+    if (fortRef) {
+      get(fortRef)
+      .then((data) => {
+        const fortObj = data.val();
+
+        // go through the fort pieces, damaging (and removing!) them along the way
+        (damage > 0) ? damage = DamageFort("wall", 0, fortObj, damage) : damage = 0;
+        (damage > 0) ? damage = DamageFort("fortification", 2, fortObj, damage) : damage = 0;
+        (damage > 0) ? damage = DamageFort("tower", 1, fortObj, damage) : damage = 0;
+        (damage > 0) ? damage = DamageFort("keep", 3, fortObj, damage) : damage = 0;
+
+        // we may have made it through the fight...
+        const playerFightsRef = ref(database, userKey + "/fights");
+        set(playerFightsRef, (fights + 1));
+
+        // console.log("Final damage left: ", damage);
+        // if there is *still* damage left...injure the player!
+        const playerHealthRef = ref(database, userKey + "/health");
+        
+        get(playerHealthRef)
+        .then((playerData) => {
+          const playerHealth = playerData.val();
+          // console.log("Player Health: ", playerHealth);
+
+          if (damage > 0) {
+            const curDMG = Math.floor(damage / 100);
+            if (curDMG > playerHealth) {
+              // player got knocked out!
+              Swal.fire({
+                icon: "info",
+                title: "You're out of the fight!",
+                html: `Your health got knocked down to 0 (or lower!). <p><b>You survived: ${fights} fights!</b></p> Time to reset and see if you can't last longer next time.`,
+              })
+              set(playerHealthRef, 100);
+              set(playerFightsRef, 0);
+              remove(fortRef);
+            } else {
+              set(playerHealthRef, (playerHealth - curDMG));
+            }
+          }
+        })
+      })
+    }
+  }
+
   // our main site!
   return (
     <main>
@@ -438,8 +540,11 @@ function App() {
             <DisplayTools tools={myTools} toolClick={handleToolClick} toolBuy={handleBuyTool}/>
             <DisplayFortPieces fortPieces={fortPieces} fortBuy={handleBuyFortPiece}/>
           </div>
-          <DisplayFort fights={fights} fort={myFort} removeFortItem={removeFortItem}
-          />
+          <div className="fort-info">
+            <DisplayFort fights={fights} fort={myFort} removeFortItem={removeFortItem}
+            />
+            <button className="snowball-fight" onClick={handleFight}>Start Snowball Fight!</button>
+          </div>
           <DisplayPlayer player={userID} health={health} fort={myFort}/>
           </>)
         : (

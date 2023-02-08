@@ -6,7 +6,7 @@ function DisplayFort ({fights, fort, removeFortItem}) {
     : `You have survived ${fights} snowball fights`;
 
   return (
-    <div className="fort-info">
+    <>
       <h2>My Fort</h2>
       <p>{fightText}</p>
       <div className="my-fort">
@@ -38,7 +38,7 @@ function DisplayFort ({fights, fort, removeFortItem}) {
             ) : null)}
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

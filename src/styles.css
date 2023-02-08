@@ -139,11 +139,19 @@ form button {
 /* USER'S FORT SECTION */
 .fort-info {
     border: 5px double darkgrey;
+    position: relative;
 }
 
 .fort-info h2 {
   margin-top: 20px;
   margin-bottom: 10px;
+}
+
+.snowball-fight {
+  padding: 5px;
+  position: absolute;
+  top: 30px;
+  right: 150px;
 }
 
 .my-fort {
@@ -337,6 +345,10 @@ form button {
   button {
     padding: 12px;
   }
+
+  .snowball-fight {
+    right: calc(20vw - 120px);
+  }
 }
 
 @media (max-width: 850px) {
@@ -349,12 +361,23 @@ form button {
   button {
     padding: 10px;
   }
+
+  .fort-info h2 {
+    margin-top: 60px;
+  }
+
+  .snowball-fight {
+    top: 15px;
+    right: 100px;
+  }
 }
 
 @media (max-width: 600px) {
 
   /* all of our styles for MOBILE devices will go within this breakpoint */
-
+  .snowball-fight {
+    right: 20px;
+  }
 }
 
 @media (max-width: 360px) {
