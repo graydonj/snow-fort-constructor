@@ -257,7 +257,7 @@ function App() {
     setUserID(thisUser);
     sessionStorage.setItem("userID", thisUser);
     setInput("");
-  }, []);
+  }, [myTools]);
 
   const handleToolClick = (tool) => {
 
