@@ -1,0 +1,387 @@
+html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,footer,header,nav,section{display:block}h1{font-size:2em;margin:.67em 0}figcaption,figure,main{display:block}figure{margin:1em 40px}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent;-webkit-text-decoration-skip:objects}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:inherit}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}dfn{font-style:italic}mark{background-color:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}audio,video{display:inline-block}audio:not([controls]){display:none;height:0}img{border-style:none}svg:not(:root){overflow:hidden}button,input,optgroup,select,textarea{font-family:sans-serif;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}button,html [type=button],[type=reset],[type=submit]{-webkit-appearance:button}button::-moz-focus-inner,[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner{border-style:none;padding:0}button:-moz-focusring,[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{display:inline-block;vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details,menu{display:block}summary{display:list-item}canvas{display:inline-block}template{display:none}[hidden]{display:none}
+
+html { box-sizing: border-box;}
+
+*, *:before, *:after {box-sizing: inherit}
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; border: 0; padding: 0; white-space: nowrap; clip-path: inset(100%); clip: rect(0 0 0 0); overflow: hidden;}
+
+html {
+    background-color: antiquewhite;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 125%;
+}
+
+h1 {
+    text-align: center;
+    font-size: 3.5rem;
+    margin: 20px 0px;
+    /* text-shadow: rgba(76, 210, 255, 1) 0px -5px 20px,
+    rgba(76, 210, 255, 0.8) 0px -2px 40px,
+    rgba(76, 210, 255, 0.6) 0px 0px 100px,
+    rgba(76, 210, 255, 0.4) 0px 0px 200px,
+    rgba(76, 210, 255, 0.3) 0px 0px 400px; */
+}
+
+h2 {
+    text-align: center;
+}
+
+/* h5 is the style element for the title of the fort items */
+h5 {
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+  max-width: 1260px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+section {
+  margin: 5px 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+button {
+  background-color: white;
+  color: #333;
+  padding: 15px 20px;
+  margin: 2px auto;
+  border: 1px solid blue;
+  display: block;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+button:hover,
+button:focus {
+  background-color: lightskyblue;
+  transition: 0.7s;
+}
+
+button:active {
+    scale: 0.9;
+    transition: 0.3s;
+}
+
+p {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    /* border: 1px solid red; */
+}
+
+form {
+  margin-top: 80px;
+  text-align: center;
+}
+
+form button {
+  margin-top: 40px;
+}
+
+.logout {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+/* BANK SECTION */
+.current-amounts {
+  margin-top: 20px;
+}
+
+.bank-div {
+  padding: 15px;
+}
+
+.bank-div h3 {
+  display: inline;
+}
+
+.current-snow,
+.current-pennies {
+  background-color: #ddd;
+  padding: 10px 15px;
+  border-radius: 50%;
+  margin-left: 50px;
+}
+
+
+/* TOOLS & FORTS BUTTON SECTION */
+.buttons-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+.buttons-wrapper h2 {
+    padding: 0 10px;
+    margin: 5px;
+}
+
+.tool-amount {
+  background-color: #ddd;
+  padding: 5px;
+  margin: 0px;
+  border-radius: 50%;
+  display: block;
+}
+
+/* USER'S FORT SECTION */
+.fort-info {
+    border: 5px double darkgrey;
+    position: relative;
+}
+
+.fort-info h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.snowball-fight {
+  padding: 5px;
+  position: absolute;
+  top: 30px;
+  right: 150px;
+}
+
+.my-fort {
+    /* background: linear-gradient(to right, rgba(145, 152, 229, 0.4), rgba(255, 127, 80, 0.4), rgba(34, 139, 34, 0.4)); */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.fort-section {
+  position: relative;
+  width: 95%;
+  margin-top: 40px;
+  padding-top: 5px;
+  padding-bottom: 0px;
+  border: 2px dotted grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.fort-section h4 {
+  padding: 5px;
+  position: absolute;
+  top: -60px;
+  left: -2px;
+  background-color: lightgreen;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+/* INDIVIDUAL FORT ITEMS */
+.fort-item,
+.fort-item-keep,
+.fort-item-dmg,
+.fort-item-xdmg {
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid black;
+    background-color: lightgreen;
+    color: darkgreen;
+}
+
+.fort-item-keep {
+  padding: 2px;
+}
+
+.fort-item-keep button {
+  padding: 5px;
+}
+
+/* DAMAGED FORT ITEMS */
+.fort-item-dmg {
+    background-color: gold;
+    color: black;
+}
+
+.fort-item-xdmg {
+    background-color: crimson;
+    color: lightgrey;
+}
+
+/* SPECIFIC BUTTONS & NUMBERS */
+.item-div {
+    border: 2px inset white;
+    padding: 10px;
+}
+
+.current-amounts {
+    background: linear-gradient(white, #9198e5);
+}
+
+.buttons-tools,
+.buttons-fort-pieces {
+  border: 2px solid grey;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.buttons-tools {
+    background: linear-gradient(white, coral 35%);
+}
+
+.buttons-fort-pieces {
+    background: linear-gradient(white, forestgreen 35%);
+}
+
+
+/* PLAYER INFO (BOTTOM OF FORT) */
+.player-info {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player {
+  padding: 10px;
+  border: 5px double blue;
+  background-color: lightblue;
+  color: black;
+  display: inline-block;
+  margin: auto;
+}
+
+.player p {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.25rem;
+  letter-spacing: 0.03rem;
+}
+
+.keep {
+  width: 100%;
+  border: 10px solid grey;
+  padding: 10px;
+  background-color: lightgreen;
+}
+
+
+/* ANIMATIONS */
+.snowflake-one,
+.snowflake-two,
+.snowflake-three,
+.snowflake-four {
+  top: -50vh;
+  position: absolute;
+  opacity: 20%;
+  z-index: -1;
+  overflow: hidden;
+  animation: falling-one 40s infinite ease;
+}
+
+.snowflake-two {
+  left: 30vw;
+  animation-delay: 8s;
+  animation-name: falling-two;
+}
+
+.snowflake-three {
+  left: 55vw;
+  animation-delay: 20s;
+}
+
+.snowflake-four {
+  left: 75vw;
+  animation-delay: 29s;
+  animation-name: falling-two;
+}
+
+@keyframes falling-one {
+  0% {
+    transform: translateY(-50vh) translateX(-10vw) scale(20) rotate(100deg);
+  }
+
+  100% {
+    transform: translateY(300vh) translateX(10vw) scale(10) rotate(0deg);
+  }
+}
+
+@keyframes falling-two {
+  0% {
+    transform: translateY(-50vh) translateX(30vw) scale(10) rotate(0deg);
+  }
+
+  100% {
+    transform: translateY(300vh) translateX(10vw) scale(20) rotate(150deg);
+  }
+}
+
+
+/* MEDIA QUERIES */
+@media (max-width: 1300px) {
+  .buttons-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1100px) {
+
+  /* all of our styles for smaller DESKTOP devices will go within this breakpoint */
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  button {
+    padding: 12px;
+  }
+
+  .snowball-fight {
+    right: calc(20vw - 120px);
+  }
+}
+
+@media (max-width: 850px) {
+
+  /* all of our styles for TABLET devices will go within this breakpoint */
+  h1 {
+    margin-top: 70px;
+  }
+
+  button {
+    padding: 10px;
+  }
+
+  .fort-info h2 {
+    margin-top: 60px;
+  }
+
+  .snowball-fight {
+    top: 15px;
+    right: 100px;
+  }
+}
+
+@media (max-width: 600px) {
+
+  /* all of our styles for MOBILE devices will go within this breakpoint */
+  .snowball-fight {
+    right: 20px;
+  }
+}
+
+@media (max-width: 360px) {
+
+  /* all of our styles for really small MOBILE devices will go within this breakpoint */
+
+}
