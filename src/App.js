@@ -1,5 +1,5 @@
 import firebase from './firebase';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getDatabase, push, ref, set, get, remove, onValue } from 'firebase/database';
 import Swal from 'sweetalert2';
 import './styles.css';
@@ -102,7 +102,7 @@ function App() {
     getUser(input);
   }
 
-  const getUser = (thisUser) => {
+  const getUser = useCallback((thisUser) => {
 
     // presume we have a new user:
     // set up array to store tool info, and a newUser object
@@ -257,7 +257,7 @@ function App() {
     setUserID(thisUser);
     sessionStorage.setItem("userID", thisUser);
     setInput("");
-  }
+  }, []);
 
   const handleToolClick = (tool) => {
 
