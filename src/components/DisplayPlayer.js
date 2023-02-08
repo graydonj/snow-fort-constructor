@@ -11,7 +11,7 @@ function DisplayPlayer({player, health, fort}) {
   })
   
   // set the HTML that now includes our keep div wrappers
-  const allHTML = keepWrapperTop + `<div class="player"><p>~${player}~</p>HEALTH:${health}🤍</div>` + keepWrapperBottom;
+  const allHTML = keepWrapperTop + `<div class="player"><p>${player}</p>HEALTH:${health}🤍</div>` + keepWrapperBottom;
 
   return (
     <div className="player-info">

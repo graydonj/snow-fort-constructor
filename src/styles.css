@@ -178,6 +178,7 @@ form button {
   border-top-right-radius: 20px;
 }
 
+/* INDIVIDUAL FORT ITEMS */
 .fort-item,
 .fort-item-keep,
 .fort-item-dmg,
@@ -197,6 +198,7 @@ form button {
   padding: 5px;
 }
 
+/* DAMAGED FORT ITEMS */
 .fort-item-dmg {
     background-color: gold;
     color: black;
@@ -207,6 +209,7 @@ form button {
     color: lightgrey;
 }
 
+/* SPECIFIC BUTTONS & NUMBERS */
 .item-div {
     border: 2px inset white;
     padding: 10px;
@@ -232,6 +235,8 @@ form button {
     background: linear-gradient(white, forestgreen 35%);
 }
 
+
+/* PLAYER INFO (BOTTOM OF FORT) */
 .player-info {
   padding: 20px;
   display: flex;
@@ -248,6 +253,13 @@ form button {
   margin: auto;
 }
 
+.player p {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.25rem;
+  letter-spacing: 0.03rem;
+}
+
 .keep {
   width: 100%;
   border: 10px solid grey;
@@ -255,6 +267,8 @@ form button {
   background-color: lightgreen;
 }
 
+
+/* ANIMATIONS */
 .snowflake-one,
 .snowflake-two,
 .snowflake-three,
@@ -264,23 +278,23 @@ form button {
   opacity: 20%;
   z-index: -1;
   overflow: hidden;
-  animation: falling-one 30s infinite ease;
+  animation: falling-one 40s infinite ease;
 }
 
 .snowflake-two {
   left: 30vw;
-  animation-delay: 4s;
+  animation-delay: 8s;
   animation-name: falling-two;
 }
 
 .snowflake-three {
   left: 55vw;
-  animation-delay: 15s;
+  animation-delay: 20s;
 }
 
 .snowflake-four {
   left: 75vw;
-  animation-delay: 8s;
+  animation-delay: 29s;
   animation-name: falling-two;
 }
 
@@ -304,6 +318,8 @@ form button {
   }
 }
 
+
+/* MEDIA QUERIES */
 @media (max-width: 1300px) {
   .buttons-wrapper {
     flex-direction: column;
@@ -319,7 +335,7 @@ form button {
   }
 
   button {
-    padding: 15px;
+    padding: 12px;
   }
 }
 
