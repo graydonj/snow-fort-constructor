@@ -1,5 +1,5 @@
 import firebase from './firebase';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { getDatabase, push, ref, set, get, remove, onValue } from 'firebase/database';
 import Swal from 'sweetalert2';
 import './styles.css';
@@ -46,6 +46,8 @@ function App() {
     if (sessionUser) {
       setInput(sessionUser);
       userKey = sessionUserKey;
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       getUser(sessionUser);
     } else {
 
@@ -102,7 +104,7 @@ function App() {
     getUser(input);
   }
 
-  const getUser = useCallback((thisUser) => {
+  const getUser = (thisUser) => {
 
     // presume we have a new user:
     // set up array to store tool info, and a newUser object
@@ -257,7 +259,7 @@ function App() {
     setUserID(thisUser);
     sessionStorage.setItem("userID", thisUser);
     setInput("");
-  }, [myTools]);
+  }
 
   const handleToolClick = (tool) => {
 
