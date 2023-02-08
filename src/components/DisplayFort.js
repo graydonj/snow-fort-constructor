@@ -37,7 +37,7 @@ function DisplayFort ({fights, fort, removeFortItem}) {
               //   <p>{fortItem.health}🤍 | {fortItem.defence}🛡️</p>
               //   <button onClick={()=>removeFortItem(fortItem)}>remove</button>
               // </div>
-              <DisplayFortSection fortItem={fortItem} removeFortItem={removeFortItem}/>
+              <DisplayFortSection key={fortItem.id} fortItem={fortItem} removeFortItem={removeFortItem}/>
               ) : null )}
           {/* <DisplayFortSection type="wall" fort={fort} removeFortItem={removeFortItem}/> */}
         </div>
@@ -49,7 +49,7 @@ function DisplayFort ({fights, fort, removeFortItem}) {
               //   <p>{fortItem.health}🤍 | {fortItem.defence}🛡️</p>
               //   <button onClick={() => removeFortItem(fortItem)}>remove</button>
               // </div>
-              <DisplayFortSection fortItem={fortItem} removeFortItem={removeFortItem} />
+              <DisplayFortSection key={fortItem.id} fortItem={fortItem} removeFortItem={removeFortItem} />
             ) : null)}
         </div>
         <div className="fort-section"><h4>TOWERS</h4>
@@ -60,7 +60,7 @@ function DisplayFort ({fights, fort, removeFortItem}) {
               //   <p>{fortItem.health}🤍 | {fortItem.defence}🛡️</p>
               //   <button onClick={() => removeFortItem(fortItem)}>remove</button>
               // </div>
-              <DisplayFortSection fortItem={fortItem} removeFortItem={removeFortItem} />
+              <DisplayFortSection key={fortItem.id} fortItem={fortItem} removeFortItem={removeFortItem} />
             ) : null)}
         </div>
         <div className="fort-section"><h4>KEEPS</h4>

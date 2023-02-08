@@ -15,7 +15,12 @@ html {
 h1 {
     text-align: center;
     font-size: 3.5rem;
-    margin-top: 20px;
+    margin: 20px 0px;
+    /* text-shadow: rgba(76, 210, 255, 1) 0px -5px 20px,
+    rgba(76, 210, 255, 0.8) 0px -2px 40px,
+    rgba(76, 210, 255, 0.6) 0px 0px 100px,
+    rgba(76, 210, 255, 0.4) 0px 0px 200px,
+    rgba(76, 210, 255, 0.3) 0px 0px 400px; */
 }
 
 h2 {
@@ -47,8 +52,8 @@ section {
 button {
   background-color: white;
   color: #333;
-  padding: 20px;
-  margin: 5px auto;
+  padding: 15px 20px;
+  margin: 2px auto;
   border: 1px solid blue;
   display: block;
   cursor: pointer;
@@ -88,14 +93,29 @@ form button {
   right: 20px;
 }
 
+/* BANK SECTION */
+.current-amounts {
+  margin-top: 20px;
+}
+
 .bank-div {
-  padding: 20px;
+  padding: 15px;
 }
 
 .bank-div h3 {
   display: inline;
 }
 
+.current-snow,
+.current-pennies {
+  background-color: #ddd;
+  padding: 10px 15px;
+  border-radius: 50%;
+  margin-left: 50px;
+}
+
+
+/* TOOLS & FORTS BUTTON SECTION */
 .buttons-wrapper {
     display: flex;
     justify-content: space-between;
@@ -105,14 +125,7 @@ form button {
 
 .buttons-wrapper h2 {
     padding: 0 10px;
-}
-
-.current-snow,
-.current-pennies {
-    background-color: #ddd;
-    padding: 10px 15px;
-    border-radius: 50%;
-    margin-left: 50px;
+    margin: 5px;
 }
 
 .tool-amount {
@@ -123,8 +136,14 @@ form button {
   display: block;
 }
 
+/* USER'S FORT SECTION */
 .fort-info {
     border: 5px double darkgrey;
+}
+
+.fort-info h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .my-fort {
@@ -140,7 +159,7 @@ form button {
   position: relative;
   width: 95%;
   margin-top: 40px;
-  padding-top: 10px;
+  padding-top: 5px;
   padding-bottom: 0px;
   border: 2px dotted grey;
   display: flex;
@@ -163,7 +182,7 @@ form button {
 .fort-item-keep,
 .fort-item-dmg,
 .fort-item-xdmg {
-    padding: 10px;
+    padding: 5px;
     margin-bottom: 5px;
     border: 1px solid black;
     background-color: lightgreen;
@@ -171,7 +190,7 @@ form button {
 }
 
 .fort-item-keep {
-  padding: 5px;
+  padding: 2px;
 }
 
 .fort-item-keep button {

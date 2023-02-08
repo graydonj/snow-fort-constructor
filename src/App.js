@@ -1,6 +1,6 @@
 import firebase from './firebase';
 import { useState, useEffect } from 'react';
-import { getDatabase, push, ref, set, get, remove } from 'firebase/database';
+import { getDatabase, push, ref, set, get, remove, onValue } from 'firebase/database';
 import Swal from 'sweetalert2';
 import './styles.css';
 
@@ -15,6 +15,7 @@ import UserLogin from './components/UserLogin';
 // set some global variables
 const pennyChance = 0.5; // chance to find pennies is ~50% for each unit of snow you shovel
 const initHealth = 100; // player's initial health amount
+let userKey = ""; // player's location in the database
 
 // our database
 const database = getDatabase(firebase);
@@ -26,9 +27,9 @@ function App() {
   // our fort pieces state for the app
   const [fortPieces, setFortPieces] = useState([]);
 
-  // state values for this user: ID, key, snow, pennies, their tools, their fort, health, and # of snowball fights they have been in!
+  // state values for this user: ID, snow, pennies, their tools, their fort, health, and # of snowball fights they have been in!
   const [userID, setUserID] = useState("");
-  const [userKey, setUserKey] = useState("");
+  // const [userKey, setUserKey] = useState("");
   const [snow, setSnow] = useState(0);
   const [pennies, setPennies] = useState(0);
   const [myTools, setMyTools] = useState([]);
@@ -41,8 +42,10 @@ function App() {
 
     // first, a quick check to get session data
     const sessionUser = sessionStorage.getItem("userID");
+    const sessionUserKey = sessionStorage.getItem("userKey");
     if (sessionUser) {
       setInput(sessionUser);
+      userKey = sessionUserKey;
       getUser(sessionUser);
     } else {
 
@@ -83,6 +86,11 @@ function App() {
         fortPiecesArray.sort((a,b) => a.cost - b.cost);
         setFortPieces(fortPiecesArray);
       });
+
+      // return our unmount function
+      // return function cleanup() {
+        // frankly not sure what to do here to accurately clean up Firebase listeners (onValue calls)
+      // }
   }, [])
 
   const handleInput = (event) => {
@@ -98,7 +106,7 @@ function App() {
 
     // presume we have a new user:
     // set up array to store tool info, and a newUser object
-    const toolsArray = [];
+    // const toolsArray = [];
     let newUserID = true;
     let newUser = {};
 
@@ -114,22 +122,24 @@ function App() {
         for (let users in dataObj) {
           if (dataObj[users].id === thisUser) {
 
+            // our user exists, so set their database ID in userKey
+            userKey = users;
+
             // set the state for the simple variables
-            setUserKey(users);
-            setSnow(dataObj[users].snow);
-            setPennies(dataObj[users].pennies);
+            // setSnow(dataObj[users].snow);
+            // setPennies(dataObj[users].pennies);
             setHealth(dataObj[users].health);
             setFights(dataObj[users].fights);
 
-            // parse the database tools object into an array to put into state
-            for (let tool in dataObj[users].tools) {
-              const toolObj = dataObj[users].tools[tool];
-              const toolItem = { name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow };
-              toolsArray.push(toolItem);
-            }
+            // // parse the database tools object into an array to put into state
+            // for (let tool in dataObj[users].tools) {
+            //   const toolObj = dataObj[users].tools[tool];
+            //   const toolItem = { name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow };
+            //   toolsArray.push(toolItem);
+            // }
 
-            // sort the array into ascending order by cost of tool
-            toolsArray.sort((a, b) => a.cost - b.cost);
+            // // sort the array into ascending order by cost of tool
+            // toolsArray.sort((a, b) => a.cost - b.cost);
             // console.log('User exists and their tools are: ', toolsArray);
 
             // parse the database fort object into an array to put into state
@@ -147,21 +157,31 @@ function App() {
         // set up potential new user
         if (newUserID) {
           // create the user
-          const userTools = {};
-          for (let tool in dataObj.tools) {
-            const toolObj = dataObj.tools[tool];
-            toolsArray.push({ name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow });
-            userTools[tool] = {
-              cost: toolObj.cost,
-              number: toolObj.number,
-              snow: toolObj.snow
-            }
-          }
+          // const userTools = {};
+          // for (let tool in dataObj.tools) {
+          //   const toolObj = dataObj.tools[tool];
+          //   toolsArray.push({ name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow });
+          //   userTools[tool] = {
+          //     cost: toolObj.cost,
+          //     number: toolObj.number,
+          //     snow: toolObj.snow
+          //   }
+          // }
 
           // sort the array into ascending order by cost of tool
-          toolsArray.sort((a, b) => a.cost - b.cost);
+          // toolsArray.sort((a, b) => a.cost - b.cost);
           // console.log("New user toolsArray:", toolsArray);
           // console.log("New userTools:", userTools);
+
+          // create a tools object from our myTools array to put into the new user data
+          const userTools = {};
+          myTools.forEach((tool) => {
+            userTools[tool.name] = {
+              cost: tool.cost,
+              number: tool.number,
+              snow: tool.snow,
+            }
+          })
 
           newUser = {
             id: thisUser,
@@ -176,16 +196,61 @@ function App() {
 
           // set the new user's current state
           const newUserKey = push(dbRef, newUser).key;
-          setUserKey(newUserKey);
+          userKey = newUserKey;
           setMyFort([]);
-          setSnow(newUser.snow);
-          setPennies(newUser.pennies);
+          // setSnow(newUser.snow);
+          // setPennies(newUser.pennies);
           setHealth(initHealth);
           setFights(0);
         }
 
         // no matter what, toolsArray is the new state of myTools
-        setMyTools(toolsArray);
+        // setMyTools(toolsArray);
+
+        // create data listeners for the user
+        const snowRef = ref(database, userKey + "/snow");
+        const pennyRef = ref(database, userKey + "/pennies");
+        const toolsRef = ref(database, userKey + "/tools");
+        // const fortRef = ref(database, userKey + "/fort")
+
+        // SNOW listener
+        onValue(snowRef, (data) => {
+          const userSnow = data.val();
+          setSnow(userSnow);
+        });
+
+        // PENNY listener
+        onValue(pennyRef, (data) => {
+          const userPennies = data.val();
+          setPennies(userPennies);
+        });
+
+        // TOOLS listener
+        onValue(toolsRef, (data) => {
+          const toolsArray = [];
+          const toolsObj = data.val();
+
+          // parse the database tools object into an array to put into state
+          for (let tool in toolsObj) {
+            const toolObj = toolsObj[tool];
+            const toolItem = { name: tool, number: toolObj.number, cost: toolObj.cost, snow: toolObj.snow };
+            toolsArray.push(toolItem);
+          }
+
+          // sort the array into ascending order by cost of tool
+          toolsArray.sort((a, b) => a.cost - b.cost);
+          setMyTools(toolsArray);
+        })
+
+        // and the userKey is set
+        sessionStorage.setItem("userKey", userKey);
+      })
+      .catch((error)=>{
+        Swal.fire({
+          icon: "error",
+          title: "Database Error",
+          text: `Error: ${error} received when calling database`,
+        });
       });
 
     // set our userID in state and in session data, then reset the input
@@ -224,14 +289,28 @@ function App() {
 
         // otherwise, increment the snow by the amount of snow for each tool of the clicked type
         const newSnow = snow + (numTools * numSnow);
-        set(snowRef, newSnow);
+        set(snowRef, newSnow)
+          .catch(()=>{
+            Swal.fire({
+              icon: "error",
+              title: "Database Error",
+              text: "We encountered an issue updating the Snow value in the database.",
+            })
+          });
         setSnow(newSnow);
 
         // ...and see if we don't find a penny or two
         const pennyFound = (Math.random() * (1 + Math.floor((numTools / 10) * (numSnow / 10))));
         if (pennyFound > pennyChance) {
           const newPennies = pennies + Math.ceil(pennyFound);
-          set(pennyRef, newPennies);
+          set(pennyRef, newPennies)
+            .catch(() => {
+              Swal.fire({
+                icon: "error",
+                title: "Database Error",
+                text: "We encountered an issue updating the Pennies value in the database.",
+              })
+            });
           setPennies(newPennies);
         }
       }
@@ -268,12 +347,26 @@ function App() {
 
         // if so, decrement the pennies
         const numPennies = pennies - curCost;
-        set(penniesRef, numPennies);
+        set(penniesRef, numPennies)
+          .catch(() => {
+            Swal.fire({
+              icon: "error",
+              title: "Database Error",
+              text: "We encountered an issue updating the Pennies value in the database.",
+            })
+          });
         setPennies(numPennies);
 
         // increment the number of tools in the database
         curNumber = curNumber + 1;
-        set(toolNumberRef, curNumber);
+        set(toolNumberRef, curNumber)
+          .catch(() => {
+            Swal.fire({
+              icon: "error",
+              title: "Database Error",
+              text: "We encountered an issue updating the number of tools in the database.",
+            })
+          });
 
         // and update our myTools state
         const newTools = [...myTools];
@@ -307,7 +400,14 @@ function App() {
 
       // if so, decrement the snow
       const numSnow = snow - fortPiece.cost;
-      set(snowRef, numSnow);
+      set(snowRef, numSnow)
+        .catch(() => {
+          Swal.fire({
+            icon: "error",
+            title: "Database Error",
+            text: "We encountered an issue updating the Snow value in the database.",
+          })
+        });
       setSnow(numSnow);
 
       // add the fort piece to our fort and update our myFort state
@@ -328,7 +428,14 @@ function App() {
     // return some snow to the player
     const curSnow = snow + Math.floor((item.cost / 5));
     setSnow(curSnow);
-    set(snowRef, curSnow);
+    set(snowRef, curSnow)
+      .catch(() => {
+        Swal.fire({
+          icon: "error",
+          title: "Database Error",
+          text: "We encountered an issue updating the Snow value in the database.",
+        })
+      });;
 
     // remove the item from our state and our database
     const newFortArray = myFort.filter((fortItem) => fortItem.id !== item.id);
