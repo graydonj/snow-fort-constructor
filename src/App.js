@@ -46,8 +46,6 @@ function App() {
     if (sessionUser) {
       setInput(sessionUser);
       userKey = sessionUserKey;
-
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       getUser(sessionUser);
     } else {
 
@@ -93,6 +91,7 @@ function App() {
       // return function cleanup() {
         // frankly not sure what to do here to accurately clean up Firebase listeners (onValue calls)
       // }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleInput = (event) => {
