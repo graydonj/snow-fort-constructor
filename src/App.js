@@ -541,11 +541,10 @@ function App() {
             <DisplayFortPieces fortPieces={fortPieces} fortBuy={handleBuyFortPiece}/>
           </div>
           <div className="fort-info">
-            <DisplayFort fights={fights} fort={myFort} removeFortItem={removeFortItem}
-            />
+            <DisplayFort fights={fights} fort={myFort} removeFortItem={removeFortItem} baseFort={fortPieces}/>
             <button className="snowball-fight" onClick={handleFight}>Start Snowball Fight!</button>
           </div>
-          <DisplayPlayer player={userID} health={health} fort={myFort}/>
+          <DisplayPlayer player={userID} health={health} fort={myFort} keepHealth={fortPieces[3].health}/>
           </>)
         : (
             <UserLogin input={input} handleInput={handleInput} handleSubmit={handleSubmit}/>

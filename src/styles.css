@@ -206,13 +206,24 @@ form button {
   padding: 5px;
 }
 
+.keep,
+.keep-dmg,
+.keep-xdmg {
+  width: 100%;
+  border: 10px solid grey;
+  padding: 10px;
+  background-color: lightgreen;
+}
+
 /* DAMAGED FORT ITEMS */
-.fort-item-dmg {
+.fort-item-dmg,
+.keep-dmg {
     background-color: gold;
     color: black;
 }
 
-.fort-item-xdmg {
+.fort-item-xdmg,
+.keep-xdmg {
     background-color: crimson;
     color: lightgrey;
 }
@@ -266,13 +277,6 @@ form button {
   font-weight: bold;
   font-size: 1.25rem;
   letter-spacing: 0.03rem;
-}
-
-.keep {
-  width: 100%;
-  border: 10px solid grey;
-  padding: 10px;
-  background-color: lightgreen;
 }
 
 

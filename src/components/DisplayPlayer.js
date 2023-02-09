@@ -1,11 +1,14 @@
-function DisplayPlayer({player, health, fort}) {
+function DisplayPlayer({player, health, fort, keepHealth}) {
 
   // dynamically construct the JSX for the keep elements in the fort to wrap the player in a layer for each keep!
   let keepWrapperTop = [];
   let keepWrapperBottom = [];
   fort.forEach((item) => {
     if (item.name === "keep") {
-      keepWrapperTop = keepWrapperTop + `<div class="keep"><h5>${item.name}</h5><p>${item.health}🤍 | ${item.defence}🛡️`;
+      const keepClass = ((item.health > (0.6 * keepHealth)) ? "keep"
+        : (item.health > (0.3 * keepHealth)) ? "keep-dmg"
+        : "keep-xdmg");
+      keepWrapperTop = keepWrapperTop + `<div class=${keepClass}><h5>${item.name}</h5><p>${item.health}🤍 | ${item.defence}🛡️`;
       keepWrapperBottom = keepWrapperBottom + `</div>`;
     }
   })
