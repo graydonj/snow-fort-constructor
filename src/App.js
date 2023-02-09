@@ -17,6 +17,7 @@ const pennyChance = 0.5; // chance to find pennies is ~50% for each unit of snow
 const initHealth = 100; // player's initial health amount
 let userKey = ""; // player's location in the database
 const baseDMG = 2000; // base damage for snow fight calculations
+const keepHealth = 100; // base health for keeps
 
 // our database
 const database = getDatabase(firebase);
@@ -544,7 +545,8 @@ function App() {
             <DisplayFort fights={fights} fort={myFort} removeFortItem={removeFortItem} baseFort={fortPieces}/>
             <button className="snowball-fight" onClick={handleFight}>Start Snowball Fight!</button>
           </div>
-          <DisplayPlayer player={userID} health={health} fort={myFort} keepHealth={fortPieces[3].health}/>
+          <DisplayPlayer player={userID} health={health} fort={myFort}
+            keepHealth={keepHealth}/>
           </>)
         : (
             <UserLogin input={input} handleInput={handleInput} handleSubmit={handleSubmit}/>
