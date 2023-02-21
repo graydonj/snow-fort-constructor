@@ -17,7 +17,7 @@ const pennyChance = 0.5; // chance to find pennies is ~50% for each unit of snow
 const initHealth = 100; // player's initial health amount
 let userKey = ""; // player's location in the database
 const baseDMG = 2000; // base damage for snow fight calculations
-const keepHealth = 100; // base health for keeps
+// const keepHealth = 100; // base health for keeps
 
 // our database
 const database = getDatabase(firebase);
@@ -402,6 +402,53 @@ function App() {
     remove(itemRef);
   }
 
+  const repairFortItem = (item) => {
+
+    // access the user's snow and the fort piece we are removing in the database
+    const snowRef = ref(database, userKey + "/snow");
+    const itemHealthRef = ref(database, userKey + "/fort/" + item.id + "/health");
+
+    // calculate the amount of damage this item has sustained
+    let baseHealth = 0;
+    fortPieces.forEach((fortItem) => {
+      if (item.name === fortItem.name) {
+        baseHealth = fortItem.health;
+      };
+    })
+    
+    const curDMG = baseHealth - item.health;
+
+    // check and see if we have enough snow
+    if (snow < curDMG) {
+      Swal.fire({
+        icon: "error",
+        title: "Oh, So Close!",
+        text: `You don't have enough Snow to repair this ${item.name}`,
+      })
+    } else {
+
+      // update the fort items health amount
+      set(itemHealthRef, baseHealth)
+        .catch(() => {
+          Swal.fire({
+            icon: "error",
+            title: "Database Error",
+            text: `We encountered an issue updating the health value of this ${item.name}`,
+          })
+        })
+
+      // and reduce the snow amount
+      set(snowRef, (snow - curDMG))
+        .catch(() => {
+          Swal.fire({
+            icon: "error",
+            title: "Database Error",
+            text: "We encountered an issue updating the Snow value in the database.",
+          })
+        })
+    }
+  }
+
   const handleLogout = () => {
 
     // reset our myTools to the initial tools from the database
@@ -542,11 +589,10 @@ function App() {
             <DisplayFortPieces fortPieces={fortPieces} fortBuy={handleBuyFortPiece}/>
           </div>
           <div className="fort-info">
-            <DisplayFort fights={fights} fort={myFort} removeFortItem={removeFortItem} baseFort={fortPieces}/>
+            <DisplayFort fights={fights} fort={myFort} removeFortItem={removeFortItem} baseFort={fortPieces} repairFortItem={repairFortItem}/>
             <button className="snowball-fight" onClick={handleFight}>Start Snowball Fight!</button>
           </div>
-          <DisplayPlayer player={userID} health={health} fort={myFort}
-            keepHealth={keepHealth}/>
+          <DisplayPlayer player={userID} health={health}/>
           </>)
         : (
             <UserLogin input={input} handleInput={handleInput} handleSubmit={handleSubmit}/>

@@ -1,4 +1,4 @@
-function DisplayFortSection({ fortItem, removeFortItem, baseHealth }) {
+function DisplayFortSection({ fortItem, removeFortItem, baseHealth, repairFortItem }) {
   const {id, name, health, defence} = fortItem;
 
   return (
@@ -8,7 +8,10 @@ function DisplayFortSection({ fortItem, removeFortItem, baseHealth }) {
       "fort-item-xdmg"}>
       <h5>{name}</h5>
       <p>{health}🤍 | {defence}🛡️</p>
-      <button onClick={() => removeFortItem(fortItem)}>remove</button>
+      <div className="fort-item-button-wrapper">
+        <button onClick={() => removeFortItem(fortItem)}>❌</button>
+        {((health < baseHealth) ? <button onClick={() => repairFortItem(fortItem)}>🔧</button> : null)}
+      </div>
     </div>
   )
 }

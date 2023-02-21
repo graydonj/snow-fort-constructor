@@ -52,7 +52,7 @@ section {
 button {
   background-color: white;
   color: #333;
-  padding: 15px 20px;
+  padding: 2px 5px;
   margin: 2px auto;
   border: 1px solid blue;
   display: block;
@@ -84,10 +84,12 @@ form {
 }
 
 form button {
+  padding: 20px;
   margin-top: 40px;
 }
 
 .logout {
+  padding: 20px;
   position: absolute;
   top: 20px;
   right: 20px;
@@ -148,10 +150,15 @@ form button {
 }
 
 .snowball-fight {
-  padding: 5px;
+  padding: 20px;
   position: absolute;
   top: 30px;
   right: 150px;
+}
+
+.snowball-fight:hover,
+.snowball-fight:focus {
+  background-color: coral;
 }
 
 .my-fort {
@@ -187,6 +194,12 @@ form button {
 }
 
 /* INDIVIDUAL FORT ITEMS */
+.fort-item-button-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 .fort-item,
 .fort-item-keep,
 .fort-item-dmg,
@@ -198,13 +211,21 @@ form button {
     color: darkgreen;
 }
 
-.fort-item-keep {
+.fort-item button,
+.fort-item-keep button,
+.fort-item-dmg button,
+.fort-item-xdmg button {
+  display: inline;
+  margin: 2px;
+}
+
+/* .fort-item-keep {
   padding: 2px;
 }
 
 .fort-item-keep button {
   padding: 5px;
-}
+} */
 
 .keep,
 .keep-dmg,
@@ -246,6 +267,11 @@ form button {
   flex-direction: column;
 }
 
+.buttons-tools button,
+.buttons-fort-pieces button {
+  padding: 10px 15px;
+}
+
 .buttons-tools {
     background: linear-gradient(white, coral 35%);
 }
@@ -266,8 +292,10 @@ form button {
 .player {
   padding: 10px;
   border: 5px double blue;
+  border-radius: 20px;
   background-color: lightblue;
   color: black;
+  text-align: center;
   display: inline-block;
   margin: auto;
 }
@@ -337,6 +365,11 @@ form button {
     flex-direction: column;
     align-items: center;
   }
+
+  .snowball-fight {
+    top: 10px;
+    padding: 10px;
+  }
 }
 
 @media (max-width: 1100px) {
@@ -347,10 +380,11 @@ form button {
   }
 
   button {
-    padding: 12px;
+    padding: 6px;
   }
 
   .snowball-fight {
+    padding: 10px;
     right: calc(20vw - 120px);
   }
 }
@@ -363,11 +397,11 @@ form button {
   }
 
   button {
-    padding: 10px;
+    padding: 4px;
   }
 
   .fort-info h2 {
-    margin-top: 60px;
+    margin-top: 80px;
   }
 
   .snowball-fight {
