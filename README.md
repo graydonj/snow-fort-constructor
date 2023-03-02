@@ -63,8 +63,19 @@ My goal was to create a React App that used Firebase as a way to store the state
         <a href="https://github.com/graydonj">
           <img src="https://avatars.githubusercontent.com/u/116847252?v=4"
             width="100px;"
-            alt="Graydon James">
+            alt="Graydon James"/>
+          <br /><sub><b>Graydon James</b></sub>
         </a>
+        <br /><a
+          href="https://graydongames.com"
+          title="graydongames.com"
+          >🖥️</a
+        >
+        <a
+          href="mailto:graydonj2@gmail.com"
+          title="email Graydon"
+          >✉️</a
+        >
       </td>
     </tr>
   </tbody>
