@@ -80,3 +80,7 @@ My goal was to create a React App that used Firebase as a way to store the state
     </tr>
   </tbody>
 </table>
+
+### License
+
+Creative Commons [CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/) 2023 Graydon James
