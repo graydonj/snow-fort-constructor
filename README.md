@@ -52,7 +52,7 @@ My goal was to create a React App that used Firebase as a way to store the state
 - React.js
 - Firebase
 - git/Github
-- VS Code
+- CSS
 
 ### Contributors
 
